@@ -8,6 +8,12 @@ describe('Ship class', () => {
     ship = new Ship(4);
   });
 
+  test('has a length property', () => {
+    expect(
+      ship.length
+    ).toBeDefined();
+  });
+
   test('increments hit counter when calling hit() method', () => {
     ship.hit()
 
