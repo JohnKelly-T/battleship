@@ -27,4 +27,18 @@ describe('Ship class', () => {
       ship.hits
     ).toBe(2);
   })
+
+  test('has isSunk() method', () => {
+    expect(
+      ship.isSunk
+    ).toBeDefined();
+  });
+
+  test('calculates a sunk ship correctly when calling isSunk() method', () => {
+    ship.hit();
+
+    expect(
+      ship.isSunk()
+    ).toBe(false);
+  });
 });
