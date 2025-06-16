@@ -41,4 +41,16 @@ describe('Ship class', () => {
       ship.isSunk()
     ).toBe(false);
   });
+
+  test('sets starting coord and orientation using place() method', () => {
+    ship.place(1, 2, 'horizontal');
+
+    expect(
+      ship.startCoord
+    ).toEqual([1, 2]);
+
+    expect(
+      ship.orientation
+    ).toBe('horizontal');
+  });
 });
