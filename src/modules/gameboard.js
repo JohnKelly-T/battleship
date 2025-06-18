@@ -71,6 +71,16 @@ class Gameboard {
       this.receivedAttacks[y][x] = 'miss';
     }
   }
+
+  areAllShipsSunk() {
+    for (let ship of this.ships) {
+      if (!ship.isSunk()) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 }
 
 let gameboard = new Gameboard();
