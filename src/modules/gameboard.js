@@ -1,4 +1,4 @@
-import { Ship } from "./ship";
+import { Ship } from "./ship.js";
 
 class Gameboard {
   constructor() {
@@ -41,10 +41,10 @@ class Gameboard {
       // check for collisions
       if (
         x < 0 
-        || x + ship.length >= this.board.length
+        || x >= this.board.length
         || y < 0
-        || y + ship.length >= this.board.length
-        || this.board[x][y] !== null
+        || y >= this.board.length
+        || this.board[y][x] !== null
       ) {
         return false;
       }
@@ -53,7 +53,7 @@ class Gameboard {
     }
 
     // if all checks pass place ship coords
-    ship.place(startX, startY);
+    ship.place(startX, startY, orientation);
     this.ships.push(ship);
 
     for (let [x, y] of coords) {
@@ -63,5 +63,9 @@ class Gameboard {
     return true;
   }
 }
+
+let gameboard = new Gameboard();
+
+gameboard.placeShip('carrier', 0, 8, 'horizontal');
 
 module.exports = { Gameboard };
