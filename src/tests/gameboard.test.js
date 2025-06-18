@@ -46,7 +46,7 @@ describe('Gameboard class', () => {
 
     test('does not place ship if there is a collision', () => {
       gameboard.placeShip('carrier', 0, 0, 'horizontal');
-      gameboard.placeShip('battleship', 0, 1, 'horizontal');
+      gameboard.placeShip('battleship', 3, 0, 'horizontal');
 
       for (let i = 0; i < 5; i++) {
         expect(
@@ -62,7 +62,7 @@ describe('Gameboard class', () => {
     });
 
     test('does not place ship if out of bounds', () => {
-      gameboard.placeShip('carrier', 0, 8);
+      gameboard.placeShip('carrier', 0, 8, 'horizontal');
 
       for (let row of gameboard.board) {
         for (let square of row) {
