@@ -62,6 +62,15 @@ class Gameboard {
 
     return true;
   }
+
+  receiveAttack(x, y) {
+    if (this.board[y][x] !== null) {
+      this.board[y][x].hit();
+      this.receivedAttacks[y][x] = 'hit';
+    } else {
+      this.receivedAttacks[y][x] = 'miss';
+    }
+  }
 }
 
 let gameboard = new Gameboard();
