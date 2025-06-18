@@ -41,9 +41,9 @@ class Gameboard {
       // check for collisions
       if (
         x < 0 
-        || x >= this.board.length
+        || x + ship.length >= this.board.length
         || y < 0
-        || y >= this.board.length
+        || y + ship.length >= this.board.length
         || this.board[x][y] !== null
       ) {
         return false;
