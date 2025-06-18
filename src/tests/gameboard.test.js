@@ -36,10 +36,19 @@ describe('Gameboard class', () => {
     test('places ships correctly', () => {
 
       gameboard.placeShip('carrier', 0, 0, 'horizontal');
+      
 
       for (let i = 0; i < 5; i++) {
         expect(
           gameboard.board[0][i]
+        ).toBeInstanceOf(Ship);
+      }
+
+      gameboard.placeShip('battleship', 0, 1, 'horizontal');
+
+      for (let i = 0; i < 4; i++) {
+        expect(
+          gameboard.board[1][i]
         ).toBeInstanceOf(Ship);
       }
     });
@@ -62,7 +71,7 @@ describe('Gameboard class', () => {
     });
 
     test('does not place ship if out of bounds', () => {
-      gameboard.placeShip('carrier', 0, 8, 'horizontal');
+      gameboard.placeShip('carrier', 8, 0, 'horizontal');
 
       for (let row of gameboard.board) {
         for (let square of row) {
@@ -74,4 +83,6 @@ describe('Gameboard class', () => {
 
     });
   });
+
+
 });
