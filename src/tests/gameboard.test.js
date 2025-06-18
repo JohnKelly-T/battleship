@@ -166,5 +166,33 @@ describe('Gameboard class', () => {
     });
   });
 
-  
-}); 
+  describe('areAllShipsSunk method', () => {
+    beforeEach(() => {
+      gameboard.placeShip('carrier', 0, 0, 'horizontal');
+      gameboard.placeShip('battleship', 0, 1, 'horizontal');
+      gameboard.placeShip('destroyer', 0, 2, 'horizontal');
+      gameboard.placeShip('submarine', 0, 3, 'horizontal');
+      gameboard.placeShip('patrolBoat', 0, 4, 'horizontal');
+    });
+
+    test('returns false when there are still ships to sink', () => {
+      expect(
+        gameboard.areAllShipsSunk()
+      ).toBe(false);
+    });
+
+    test('returns true when all ships are sunk', () => {
+
+      // place hits on all squares to sink all ships
+      for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+          gameboard.receiveAttack(i, j);
+        }
+      }
+
+      expect(
+        gameboard.areAllShipsSunk()
+      ).toBe(true);
+    })
+  })
+});   
