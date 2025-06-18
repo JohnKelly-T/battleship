@@ -84,5 +84,87 @@ describe('Gameboard class', () => {
     });
   });
 
+  describe('receiveAttack method', () => {
+    beforeEach(() => {
+      gameboard.placeShip('carrier', 0, 0, 'horizontal');
+      gameboard.placeShip('battleship', 0, 1, 'horizontal');
+      gameboard.placeShip('destroyer', 0, 2, 'horizontal');
+      gameboard.placeShip('submarine', 0, 3, 'horizontal');
+      gameboard.placeShip('patrolBoat', 0, 4, 'horizontal');
+    });
 
-});
+    test('sends hit to correct ship', () => {
+      gameboard.receiveAttack(1, 0);
+
+      expect(
+        gameboard.ships[0].hits
+      ).toBe(1);
+
+      gameboard.receiveAttack(2, 1);
+
+      expect(
+        gameboard.ships[1].hits
+      ).toBe(1);
+
+      gameboard.receiveAttack(0, 2);
+
+      expect(
+        gameboard.ships[2].hits
+      ).toBe(1);
+
+      gameboard.receiveAttack(2, 3);
+
+      expect(
+        gameboard.ships[3].hits
+      ).toBe(1);
+    });
+
+    test('records hits', () => {
+      gameboard.receiveAttack(1, 0);
+      gameboard.receiveAttack(2, 1);
+      gameboard.receiveAttack(1, 2);
+      gameboard.receiveAttack(2, 3);
+
+      expect(
+        gameboard.receivedAttacks[0][1]
+      ).toBe('hit');
+
+      expect(
+        gameboard.receivedAttacks[1][2]
+      ).toBe('hit');
+
+      expect(
+        gameboard.receivedAttacks[2][1]
+      ).toBe('hit');
+
+      expect(
+        gameboard.receivedAttacks[3][2]
+      ).toBe('hit');
+    });
+
+    test('records misses', () => {
+      gameboard.receiveAttack(7, 0);
+      gameboard.receiveAttack(8, 1);
+      gameboard.receiveAttack(6, 2);
+      gameboard.receiveAttack(9, 3);
+
+      expect(
+        gameboard.receivedAttacks[0][7]
+      ).toBe('miss');
+
+      expect(
+        gameboard.receivedAttacks[1][8]
+      ).toBe('miss');
+
+      expect(
+        gameboard.receivedAttacks[2][6]
+      ).toBe('miss');
+
+      expect(
+        gameboard.receivedAttacks[3][9]
+      ).toBe('miss');
+    });
+  });
+
+  
+}); 
