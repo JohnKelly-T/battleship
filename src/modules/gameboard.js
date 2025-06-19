@@ -64,12 +64,18 @@ class Gameboard {
   }
 
   receiveAttack(x, y) {
+    if (this.receivedAttacks[y][x] !== null) {
+      return false;
+    }
+
     if (this.board[y][x] !== null) {
       this.board[y][x].hit();
       this.receivedAttacks[y][x] = 'hit';
     } else {
       this.receivedAttacks[y][x] = 'miss';
     }
+
+    return true;
   }
 
   areAllShipsSunk() {
