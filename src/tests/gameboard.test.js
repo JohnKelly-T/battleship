@@ -164,6 +164,22 @@ describe('Gameboard class', () => {
         gameboard.receivedAttacks[3][9]
       ).toBe('miss');
     });
+
+    test('returns true for a valid hit', () => {
+      expect(
+        gameboard.receiveAttack(7, 0)
+      ).toBe(true);
+    });
+
+    test('returns false when coordinate has already been hit', () => {
+      expect(
+        gameboard.receiveAttack(7, 0)
+      ).toBe(true);
+
+      expect(
+        gameboard.receiveAttack(7, 0)
+      ).toBe(false);
+    });
   });
 
   describe('areAllShipsSunk method', () => {
