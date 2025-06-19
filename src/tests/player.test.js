@@ -6,11 +6,11 @@ describe('Player class', () => {
     let player = new Player();
 
     expect(
-      player.board
+      player.gameboard
     ).toBeDefined();
 
     expect(
-      player.board
+      player.gameboard
     ).toBeInstanceOf(Gameboard);
   });
 
@@ -25,14 +25,14 @@ describe('Player class', () => {
       player.placeShipsRandomly();
 
       expect(
-        player.board.ships.length
+        player.gameboard.ships.length
       ).toBe(5);
     });
 
     test('places ships of each type', () => {
       player.placeShipsRandomly();
 
-      expect(player.board.ships).toEqual(
+      expect(player.gameboard.ships).toEqual(
         expect.arrayContaining([
           expect.objectContaining({ length: 5}),
           expect.objectContaining({ length: 4}),

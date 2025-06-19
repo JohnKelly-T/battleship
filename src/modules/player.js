@@ -2,7 +2,7 @@ import { Gameboard } from "./gameboard.js";
 
 class Player {
   constructor() {
-    this.board = new Gameboard();
+    this.gameboard = new Gameboard();
   }
 
   placeShipsRandomly() {
@@ -22,7 +22,7 @@ class Player {
       let orientation = orientations[Math.floor(Math.random() * 2)];
 
       // reroll coordinates if random value is invalid
-      while (this.board.placeShip(ship, x, y, orientation) !== true) {
+      while (this.gameboard.placeShip(ship, x, y, orientation) !== true) {
         x = Math.floor(Math.random() * 10);
         y = Math.floor(Math.random() * 10);
         orientation = orientations[Math.floor(Math.random() * 2)];
