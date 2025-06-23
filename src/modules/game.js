@@ -14,6 +14,16 @@ class Game {
     this.turnEnemy = temp;
   }
 
+  makeMove(x, y) {
+    let moveSuccess = this.turnEnemy.gameboard.receiveAttack(x, y);
+
+    if (moveSuccess) {
+      this.toggleTurn();
+    }
+
+    return moveSuccess;
+  }
+
 
 }
 
