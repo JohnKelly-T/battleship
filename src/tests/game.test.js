@@ -16,7 +16,7 @@ describe('Game class', () => {
     game = new Game(player1, player2);
   });
 
-  describe('toggle turn method', () => {
+  describe('toggleTurn method', () => {
     test('swaps current turn player and enemy', () => {
       expect(
         game.turnPlayer
@@ -30,7 +30,7 @@ describe('Game class', () => {
     })
   })
 
-  describe('make move method', () => {
+  describe('makeMove method', () => {
     test('makes move on correct player', () => {
       let xMove = 1;
       let yMove = 2;
@@ -55,4 +55,47 @@ describe('Game class', () => {
 
     });
   });
+
+  describe('isOver method', () => {
+    beforeEach(() => {
+      // reset player gameboards
+       player1 = new Player();
+      player2 = new Player();
+
+      player1.placeShipsRandomly();
+      player2.placeShipsRandomly();
+
+      game = new Game(player1, player2);
+    });
+
+    test('determines game is over when player1 ships are all sunk', () => {
+
+      // hit all squares to ensure all ships are sunk
+
+      for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+          game.player1.gameboard.receiveAttack(i, j);
+        }
+      }
+
+      expect(
+        game.isOver()
+      ).toBe(true);
+    })
+
+    test('determines game is over when player2 ships are all sunk', () => {
+
+      // hit all squares to ensure all ships are sunk
+
+      for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+          game.player2.gameboard.receiveAttack(i, j);
+        }
+      }
+
+      expect(
+        game.isOver()
+      ).toBe(true);
+    })
+  })
 });
