@@ -44,11 +44,11 @@ describe('Gameboard class', () => {
         ).toBeInstanceOf(Ship);
       }
 
-      gameboard.placeShip('battleship', 0, 1, 'horizontal');
+      gameboard.placeShip('battleship', 0, 2, 'horizontal');
 
       for (let i = 0; i < 4; i++) {
         expect(
-          gameboard.board[1][i]
+          gameboard.board[2][i]
         ).toBeInstanceOf(Ship);
       }
     });
@@ -82,15 +82,40 @@ describe('Gameboard class', () => {
       }
 
     });
+
+    test('does not allow adjacent placement of ships', () => {
+      gameboard.placeShip('carrier', 0, 0, 'horizontal');
+      
+      for (let i = 0; i < 5; i++) {
+        expect(
+          gameboard.board[0][i]
+        ).toBeInstanceOf(Ship);
+      }
+
+      gameboard.placeShip('battleship', 0, 1, 'horizontal');
+
+      for (let i = 0; i < 4; i++) {
+        expect(
+          gameboard.board[1][i]
+        ).not.toBeInstanceOf(Ship);
+      }
+
+      gameboard.placeShip('battleship', 0, 2, 'horizontal');
+      for (let i = 0; i < 4; i++) {
+        expect(
+          gameboard.board[2][i]
+        ).toBeInstanceOf(Ship);
+      }
+    });
   });
 
   describe('receiveAttack method', () => {
     beforeEach(() => {
       gameboard.placeShip('carrier', 0, 0, 'horizontal');
-      gameboard.placeShip('battleship', 0, 1, 'horizontal');
-      gameboard.placeShip('destroyer', 0, 2, 'horizontal');
-      gameboard.placeShip('submarine', 0, 3, 'horizontal');
-      gameboard.placeShip('patrolBoat', 0, 4, 'horizontal');
+      gameboard.placeShip('battleship', 0, 2, 'horizontal');
+      gameboard.placeShip('destroyer', 0, 4, 'horizontal');
+      gameboard.placeShip('submarine', 0, 6, 'horizontal');
+      gameboard.placeShip('patrolBoat', 0, 8, 'horizontal');
     });
 
     test('sends hit to correct ship', () => {
@@ -100,19 +125,19 @@ describe('Gameboard class', () => {
         gameboard.ships[0].hits
       ).toBe(1);
 
-      gameboard.receiveAttack(2, 1);
+      gameboard.receiveAttack(2, 2);
 
       expect(
         gameboard.ships[1].hits
       ).toBe(1);
 
-      gameboard.receiveAttack(0, 2);
+      gameboard.receiveAttack(0, 4);
 
       expect(
         gameboard.ships[2].hits
       ).toBe(1);
 
-      gameboard.receiveAttack(2, 3);
+      gameboard.receiveAttack(2, 6);
 
       expect(
         gameboard.ships[3].hits
@@ -121,24 +146,24 @@ describe('Gameboard class', () => {
 
     test('records hits', () => {
       gameboard.receiveAttack(1, 0);
-      gameboard.receiveAttack(2, 1);
-      gameboard.receiveAttack(1, 2);
-      gameboard.receiveAttack(2, 3);
+      gameboard.receiveAttack(2, 2);
+      gameboard.receiveAttack(1, 4);
+      gameboard.receiveAttack(2, 6);
 
       expect(
         gameboard.receivedAttacks[0][1]
       ).toBe('hit');
 
       expect(
-        gameboard.receivedAttacks[1][2]
+        gameboard.receivedAttacks[2][2]
       ).toBe('hit');
 
       expect(
-        gameboard.receivedAttacks[2][1]
+        gameboard.receivedAttacks[4][1]
       ).toBe('hit');
 
       expect(
-        gameboard.receivedAttacks[3][2]
+        gameboard.receivedAttacks[6][2]
       ).toBe('hit');
     });
 
@@ -185,10 +210,10 @@ describe('Gameboard class', () => {
   describe('areAllShipsSunk method', () => {
     beforeEach(() => {
       gameboard.placeShip('carrier', 0, 0, 'horizontal');
-      gameboard.placeShip('battleship', 0, 1, 'horizontal');
-      gameboard.placeShip('destroyer', 0, 2, 'horizontal');
-      gameboard.placeShip('submarine', 0, 3, 'horizontal');
-      gameboard.placeShip('patrolBoat', 0, 4, 'horizontal');
+      gameboard.placeShip('battleship', 0, 2, 'horizontal');
+      gameboard.placeShip('destroyer', 0, 4, 'horizontal');
+      gameboard.placeShip('submarine', 0, 6, 'horizontal');
+      gameboard.placeShip('patrolBoat', 0, 8, 'horizontal');
     });
 
     test('returns false when there are still ships to sink', () => {
