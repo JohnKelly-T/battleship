@@ -84,9 +84,58 @@ class Gameboard {
       return false;
     }
 
-    if (this.board[y][x] !== null) {
-      this.board[y][x].hit();
+    if (this.board[y][x] instanceof Ship) {
+      let ship = this.board[y][x];
+      ship.hit();
       this.receivedAttacks[y][x] = 'hit';
+
+      // label corners of hit to be empty 
+      if ((x - 1) >= 0) {
+        if ((y - 1) >= 0) {
+          this.receivedAttacks[y-1][x-1] = 'empty';
+        } 
+
+        if ((y + 1) < 10) {
+          this.receivedAttacks[y+1][x-1] = 'empty';
+        }
+      }
+
+      if ((x + 1) < 10) {
+        if ((y - 1) >= 0) {
+          this.receivedAttacks[y-1][x+1] = 'empty';
+        } 
+
+        if ((y + 1) < 10) {
+          this.receivedAttacks[y+1][x+1] = 'empty';
+        }
+      }
+
+      // if ship is sunk, mark last squares empty
+      if (ship.isSunk()) {
+        let startX = ship.startCoord[0];
+        let startY = ship.startCoord[1];
+
+        if (ship.orientation === 'horizontal') {
+          let endX = ship.startCoord[0] + ship.length - 1;
+          if (startX - 1 >= 0) {
+            this.receivedAttacks[startY][startX - 1] = 'empty';
+          }
+
+          if (endX + 1 < 10) {
+            this.receivedAttacks[startY][endX + 1] = 'empty';
+          }
+        } else {
+          let endY = ship.startCoord[1] + ship.length - 1;
+
+          if (startY - 1 >= 0) {
+            this.receivedAttacks[startY - 1][startX] = 'empty';
+          }
+
+          if (endX + 1 < 10) {
+            this.receivedAttacks[endY + 1][startX] = 'empty';
+          }
+        }
+      }
     } else {
       this.receivedAttacks[y][x] = 'miss';
     }
