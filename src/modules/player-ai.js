@@ -1,6 +1,6 @@
 import { Player } from "./player.js";
 
-class PlayerAI extends Player {
+export class PlayerAI extends Player {
   constructor() {
     super();
   }
@@ -20,5 +20,3 @@ class PlayerAI extends Player {
     return [randomX, randomY];
   }
 }
-
-module.exports = { PlayerAI };
