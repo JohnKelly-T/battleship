@@ -48,6 +48,22 @@ class Gameboard {
       ) {
         return false;
       }
+
+      // check for adjacent ships
+      for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <=1; j++) {
+          if (
+            (x + i) >= 0
+            && (y + j) >= 0
+            && (x + i) < 10
+            && (y + j) < 10
+          ) {
+            if (this.board[y + j][x + i] instanceof Ship) {
+              return false;
+            } 
+          }
+        }
+      }
   
       coords.push([x, y]);
     }
