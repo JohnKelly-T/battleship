@@ -115,7 +115,7 @@ describe('Gameboard class', () => {
       gameboard.placeShip('battleship', 0, 2, 'horizontal');
       gameboard.placeShip('destroyer', 0, 4, 'horizontal');
       gameboard.placeShip('submarine', 0, 6, 'horizontal');
-      gameboard.placeShip('patrolBoat', 0, 8, 'horizontal');
+      gameboard.placeShip('patrolBoat', 2, 8, 'horizontal');
     });
 
     test('sends hit to correct ship', () => {
@@ -204,6 +204,33 @@ describe('Gameboard class', () => {
       expect(
         gameboard.receiveAttack(7, 0)
       ).toBe(false);
+    });
+
+    test('adds marks for known empty squares due to the no adjacent placement rule', () => {
+      gameboard.receiveAttack(0, 0);
+
+      expect(
+        gameboard.receivedAttacks[1][1]
+      ).toBe('empty');
+
+      gameboard.receiveAttack(3, 2);
+
+      expect(gameboard.receivedAttacks[1][2]).toBe('empty');
+      expect(gameboard.receivedAttacks[3][2]).toBe('empty');
+      expect(gameboard.receivedAttacks[1][4]).toBe('empty');
+      expect(gameboard.receivedAttacks[3][4]).toBe('empty');
+
+      gameboard.receiveAttack(2, 8);
+      gameboard.receiveAttack(3, 8);
+
+      let outString = '';
+
+      for (let row of gameboard.receivedAttacks) {
+        outString += JSON.stringify(row) + '\n'
+      }
+
+      console.log(outString);
+
     });
   });
 
