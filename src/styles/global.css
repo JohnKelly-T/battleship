@@ -1,0 +1,113 @@
+:root {
+  --background-color: #0E1A23;
+  --primary-color: #3EF3FA;
+  --stroke-color: #60DCE0;
+  --dot-color: hsl(182, 95%, 30%);
+  --hover-color: rgba(62, 244, 250, 0.25);
+  --stats-stroke-color: rgba(96, 220, 224, 0.5);
+  --empty-mark-color: #094C4F;
+  --green: #44EA83;
+  --red: #F90538;
+  --orange: #F7890C;
+}
+
+body {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  background: var(--background-color);
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.25);
+  font-family: sans-serif;
+  color: var(--primary-color);
+}
+
+.game-page-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem;
+}
+
+.title {
+  font-size: 1.5rem;
+}
+
+.game-container {
+  display: flex;
+  gap: 6rem;
+  margin: auto;
+}
+
+.player-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.square {
+  margin-right: 2px;
+  margin-bottom: 2px;
+}
+
+.player2-gameboard {
+  cursor: pointer;
+}
+
+.player2-gameboard .square:hover {
+  background: var(--hover-color);
+  border-radius: 5px;
+}
+
+.gameboard {
+  width: clamp(300px, 23vw, 400px);
+  aspect-ratio: 1;
+  border: 1px solid var(--stroke-color);
+  border-radius: 5px;
+  box-shadow: 0 0 20px rgba(96, 220, 224, 0.1),
+        inset 0 0 0 5px var(--background-color);
+
+  background: var(--background-color);
+  background-image: radial-gradient(var(--dot-color) 1px, transparent 0);
+  background-size: 10% 10%;
+  background-position: calc(5% + 1px) calc(5% + 1px);
+  display: grid;
+  grid-template: repeat(10, 1fr) / repeat(10, 1fr);
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.8rem;
+  border: 2px dashed var(--stats-stroke-color);
+  border-radius: 5px;
+}
+
+.name {
+  font-weight: bold;
+}
+
+.remaining-ships-label {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.remaining-ships {
+  color: var(--orange);
+}
+
+.quit-button {
+  color: inherit;
+  background: none;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  padding: 0.2rem 2rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.quit-button:hover {
+  background: var(--primary-color);
+  color: var(--background-color);
+}
