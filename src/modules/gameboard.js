@@ -131,7 +131,7 @@ export class Gameboard {
             this.receivedAttacks[startY - 1][startX] = 'empty';
           }
 
-          if (endX + 1 < 10) {
+          if (endY + 1 < 10) {
             this.receivedAttacks[endY + 1][startX] = 'empty';
           }
         }
