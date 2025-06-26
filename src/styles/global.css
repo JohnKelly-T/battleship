@@ -13,6 +13,13 @@
   --player2-ship-shadow: 0 0 8px rgba(255, 136, 0, 0.8);
   --player2-ship-stroke: #E0A560;
 
+  --hit-mark-shadow: 0 0 8px rgba(255, 0, 55, 0.8);
+  --hit-mark-stroke: #E0607C;
+
+  --miss-mark-shadow: 0 0 8px rgba(47, 166, 170, 0.8);
+  --miss-mark-stroke: #60DCE0;
+
+
   --green: #44EA83;
   --red: #F90538;
   --orange: #F7890C;
@@ -108,6 +115,30 @@ body {
   row-gap: 2px;
   column-gap: 2px;
   padding: 2px;
+}
+
+.mark {
+  width: 30%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.hit {
+  background: var(--red);
+  box-shadow: var(--hit-mark-shadow);
+  border: 1px solid var(--hit-mark-stroke);
+}
+
+.miss {
+  background: var(--primary-color);
+  box-shadow: var(--miss-mark-shadow);
+  border: 1px solid var(--miss-mark-stroke);
+}
+
+.empty {
+  background: var(--background-color);
+  box-shadow: var(--miss-mark-shadow);
+  border: 1px solid var(--miss-mark-stroke);
 }
 
 .stats {
