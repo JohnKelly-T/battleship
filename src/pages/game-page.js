@@ -1,4 +1,6 @@
 import { Ship } from "../modules/ship";
+import { renderPlayer1Board } from "../modules/render-gameboard";
+import { renderPlayer2Board } from "../modules/render-gameboard";
 
 export function renderGamePage(game) {
   let gamepage = document.createElement('div');
@@ -17,32 +19,7 @@ export function renderGamePage(game) {
   let player1Container = document.createElement('div');
   player1Container.classList.add('player-container');
 
-  let player1Gameboard = document.createElement('div');
-  player1Gameboard.classList.add('player1-gameboard');
-  player1Gameboard.classList.add('gameboard');
-
-  for (let i = 0; i < 10; i++) {
-    for (let j = 0; j < 10; j++) {
-      let square = document.createElement('div');
-      square.classList.add('square');
-      square.setAttribute('data-y', i);
-      square.setAttribute('data-x', j);
-
-      
-      let squareItem = game.player1.gameboard.board[i][j];
-
-      // add ship
-      if (squareItem instanceof Ship) {
-        let ship = document.createElement('div');
-        ship.classList.add('ship');
-
-        square.appendChild(ship);
-      }
-
-      player1Gameboard.appendChild(square);
-    } 
-  }
-
+  let player1Gameboard = renderPlayer1Board(game);
 
   let player1Stats = document.createElement('div');
   player1Stats.classList.add('stats');
@@ -53,35 +30,11 @@ export function renderGamePage(game) {
       <div class="player1-remaining-ships remaining-ships">5</div>
     </div>
   `;
-
   
   let player2Container = document.createElement('div');
   player2Container.classList.add('player-container');
 
-  let player2Gameboard = document.createElement('div');
-  player2Gameboard.classList.add('player2-gameboard');
-  player2Gameboard.classList.add('gameboard');
-
-  for (let i = 0; i < 10; i++) {
-    for (let j = 0; j < 10; j++) {
-      let square = document.createElement('div');
-      square.classList.add('square');
-      square.setAttribute('data-y', i);
-      square.setAttribute('data-x', j);
-
-      let squareItem = game.player2.gameboard.board[i][j];
-
-      // add ship
-      if (squareItem instanceof Ship && squareItem.isSunk()) {
-        let ship = document.createElement('div');
-        ship.classList.add('ship');
-
-        square.appendChild(ship);
-      }
-
-      player2Gameboard.appendChild(square);
-    } 
-  }
+  let player2Gameboard = renderPlayer2Board(game);
 
   let player2Stats = document.createElement('div');
   player2Stats.classList.add('stats');
