@@ -141,6 +141,20 @@ body {
   border: 1px solid var(--miss-mark-stroke);
 }
 
+.explosion {
+  display: grid;
+  place-content: center;
+  width: 70%;
+  aspect-ratio: 1;
+}
+
+.explosion svg {
+  width: 100%;
+  color: var(--red);
+  filter: drop-shadow(0 3px 2px rgb(255 0 55 / 0.7));
+}
+
+
 .stats {
   display: flex;
   justify-content: space-between;
