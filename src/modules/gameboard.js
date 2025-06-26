@@ -92,21 +92,29 @@ export class Gameboard {
       // label corners of hit to be empty 
       if ((x - 1) >= 0) {
         if ((y - 1) >= 0) {
-          this.receivedAttacks[y-1][x-1] = 'empty';
+          if (this.receivedAttacks[y-1][x-1] === null) {
+            this.receivedAttacks[y-1][x-1] = 'empty';
+          }
         } 
 
         if ((y + 1) < 10) {
-          this.receivedAttacks[y+1][x-1] = 'empty';
+          if (this.receivedAttacks[y+1][x-1] === null) {
+            this.receivedAttacks[y+1][x-1] = 'empty';
+          }
         }
       }
 
       if ((x + 1) < 10) {
         if ((y - 1) >= 0) {
-          this.receivedAttacks[y-1][x+1] = 'empty';
+          if (this.receivedAttacks[y-1][x+1] === null) {
+            this.receivedAttacks[y-1][x+1] = 'empty';
+          }
         } 
 
         if ((y + 1) < 10) {
-          this.receivedAttacks[y+1][x+1] = 'empty';
+          if (this.receivedAttacks[y+1][x+1] === null) {
+            this.receivedAttacks[y+1][x+1] = 'empty';
+          }
         }
       }
 
@@ -117,21 +125,21 @@ export class Gameboard {
 
         if (ship.orientation === 'horizontal') {
           let endX = ship.startCoord[0] + ship.length - 1;
-          if (startX - 1 >= 0) {
+          if (startX - 1 >= 0 && this.receivedAttacks[startY][startX - 1] === null) {
             this.receivedAttacks[startY][startX - 1] = 'empty';
           }
 
-          if (endX + 1 < 10) {
+          if (endX + 1 < 10 && this.receivedAttacks[startY][endX + 1] === null) {
             this.receivedAttacks[startY][endX + 1] = 'empty';
           }
         } else {
           let endY = ship.startCoord[1] + ship.length - 1;
 
-          if (startY - 1 >= 0) {
+          if (startY - 1 >= 0 && this.receivedAttacks[startY - 1][startX] === null) {
             this.receivedAttacks[startY - 1][startX] = 'empty';
           }
 
-          if (endY + 1 < 10) {
+          if (endY + 1 < 10 && this.receivedAttacks[endY + 1][startX] === null) {
             this.receivedAttacks[endY + 1][startX] = 'empty';
           }
         }
