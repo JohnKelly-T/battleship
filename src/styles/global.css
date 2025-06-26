@@ -6,6 +6,13 @@
   --hover-color: rgba(62, 244, 250, 0.25);
   --stats-stroke-color: rgba(96, 220, 224, 0.5);
   --empty-mark-color: #094C4F;
+
+  --player1-ship-shadow: 0 0 8px rgba(0, 255, 98, 0.8);
+  --player1-ship-stroke: #60E091;
+
+  --player2-ship-shadow: 0 0 8px rgba(255, 136, 0, 0.8);
+  --player2-ship-stroke: #E0A560;
+
   --green: #44EA83;
   --red: #F90538;
   --orange: #F7890C;
@@ -47,8 +54,32 @@ body {
 }
 
 .square {
-  margin-right: 2px;
-  margin-bottom: 2px;
+  position: relative;
+}
+
+.square > * {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ship {
+  width: 85%;
+  aspect-ratio: 1;
+  border-radius: 5px;
+}
+
+.player1-gameboard .ship {
+  background: var(--green);
+  border: 1px solid var(--player1-ship-stroke);
+  box-shadow: var(--player1-ship-shadow);
+}
+
+.player2-gameboard .ship {
+  background: var(--orange);
+  border: 1px solid var(--player2-ship-stroke);
+  box-shadow: var(--player2-ship-shadow);
 }
 
 .player2-gameboard {
@@ -74,6 +105,9 @@ body {
   background-position: calc(5% + 1px) calc(5% + 1px);
   display: grid;
   grid-template: repeat(10, 1fr) / repeat(10, 1fr);
+  row-gap: 2px;
+  column-gap: 2px;
+  padding: 2px;
 }
 
 .stats {
