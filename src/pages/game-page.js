@@ -1,3 +1,5 @@
+import { Ship } from "../modules/ship";
+
 export function renderGamePage(game) {
   let gamepage = document.createElement('div');
   gamepage.classList.add('game-page-container');
@@ -26,9 +28,21 @@ export function renderGamePage(game) {
       square.setAttribute('data-y', i);
       square.setAttribute('data-x', j);
 
+      
+      let squareItem = game.player1.gameboard.board[i][j];
+
+      // add ship
+      if (squareItem instanceof Ship) {
+        let ship = document.createElement('div');
+        ship.classList.add('ship');
+
+        square.appendChild(ship);
+      }
+
       player1Gameboard.appendChild(square);
     } 
   }
+
 
   let player1Stats = document.createElement('div');
   player1Stats.classList.add('stats');
@@ -54,6 +68,16 @@ export function renderGamePage(game) {
       square.classList.add('square');
       square.setAttribute('data-y', i);
       square.setAttribute('data-x', j);
+
+      let squareItem = game.player2.gameboard.board[i][j];
+
+      // add ship
+      if (squareItem instanceof Ship && squareItem.isSunk()) {
+        let ship = document.createElement('div');
+        ship.classList.add('ship');
+
+        square.appendChild(ship);
+      }
 
       player2Gameboard.appendChild(square);
     } 
