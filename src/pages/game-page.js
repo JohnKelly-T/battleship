@@ -33,6 +33,7 @@ export function renderGamePage(game) {
   
   let player2Container = document.createElement('div');
   player2Container.classList.add('player-container');
+  player2Container.classList.add('player2-container');
 
   let player2Gameboard = renderPlayer2Board(game);
 
