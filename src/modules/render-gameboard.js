@@ -47,8 +47,7 @@ export function renderPlayer1Board(game) {
         }
       }
 
-      if (markElement.classList.length > 1) {
-        console.log('mark classlist length: ', markElement.classList.length);
+      if (mark !== null) {
         square.appendChild(markElement);
       }
 
@@ -106,7 +105,7 @@ export function renderPlayer2Board(game) {
         }
       }
 
-      if (markElement.classList.length > 1) {
+      if (mark !== null) {
         square.appendChild(markElement);
       }
 
