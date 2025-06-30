@@ -9,10 +9,7 @@ export class PlayerAI extends Player {
     let randomX = Math.floor(Math.random() * 10);
     let randomY = Math.floor(Math.random() * 10);
 
-    while (
-      enemyGameboard.board[randomY][randomX] !== null
-      && enemyGameboard.receivedAttacks[randomY][randomX] !== null
-    ) {
+    while (enemyGameboard.receivedAttacks[randomY][randomX] !== null) {
       randomX = Math.floor(Math.random() * 10);
       randomY = Math.floor(Math.random() * 10);
     }
