@@ -80,6 +80,10 @@ export class Gameboard {
   }
 
   receiveAttack(x, y) {
+    // convert x and y to integer
+    x = Number(x);
+    y = Number(y);
+
     if (this.receivedAttacks[y][x] !== null) {
       return false;
     }
