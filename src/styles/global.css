@@ -1,3 +1,10 @@
+@font-face {
+    font-family: "Oxanium";
+    src: url("../assets/fonts/Oxanium-VariableFont_wght.ttf");
+    font-weight: 200 800;
+    font-style: normal;
+}
+
 :root {
   --background-color: #0E1A23;
   --primary-color: #3EF3FA;
@@ -32,7 +39,7 @@ body {
   height: 100vh;
   background: var(--background-color);
   box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.25);
-  font-family: sans-serif;
+  font-family: 'Oxanium', sans-serif;
   color: var(--primary-color);
 }
 
@@ -47,6 +54,7 @@ body {
 
 .title {
   font-size: 1.5rem;
+  font-weight: 500;
 }
 
 .game-container {
@@ -200,6 +208,7 @@ body {
 
 .quit-button {
   color: inherit;
+  font-weight: 500;
   background: none;
   border: 1px solid var(--primary-color);
   border-radius: 5px;
