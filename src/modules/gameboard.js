@@ -4,6 +4,7 @@ export class Gameboard {
   constructor() {
     this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
     this.ships = [];
+    this.remainingShips = 5;
     this.receivedAttacks = Array.from({ length: 10 }, () => Array(10).fill(null));
   }
 
@@ -92,6 +93,10 @@ export class Gameboard {
       let ship = this.board[y][x];
       ship.hit();
       this.receivedAttacks[y][x] = 'hit';
+
+      if (ship.isSunk()) {
+        this.remainingShips -= 1;
+      }
 
       // label corners of hit to be empty 
       if ((x - 1) >= 0) {
