@@ -91,7 +91,7 @@ export class DomController {
             player2Gameboard.classList.remove('disabled');
             player2Gameboard.classList.add('turn');
             player2Gameboard.classList.remove('not-turn');
-          }, 0);
+          }, 800);
         }
       }
     });
