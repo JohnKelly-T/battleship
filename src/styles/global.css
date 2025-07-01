@@ -6,6 +6,7 @@
   --hover-color: rgba(62, 244, 250, 0.25);
   --stats-stroke-color: rgba(96, 220, 224, 0.5);
   --empty-mark-color: #094C4F;
+  --winning-color: #FFCC00;
 
   --player1-ship-shadow: 0 0 8px rgba(0, 255, 98, 0.8);
   --player1-ship-stroke: #60E091;
@@ -177,7 +178,15 @@ body {
 }
 
 .name {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   font-weight: bold;
+}
+
+.name .crown {
+  width: 1.5rem;
+  aspect-ratio: 1;
 }
 
 .remaining-ships-label {
@@ -238,4 +247,24 @@ body {
   box-shadow: 0 0 20px rgba(96, 220, 224, 0.1),
         inset 0 0 0 5px var(--background-color);
   animation: hideTurn 0.5s ease-out;
+}
+
+@keyframes showWinnerBoard {
+   from {
+    box-shadow: none;
+   } to {
+    box-shadow: 0 0 20px 5px rgba(255, 204, 0, 0.2),
+        inset 0 0 0 5px var(--background-color);
+   }
+}
+
+.winner-board {
+  box-shadow: 0 0 20px 5px rgba(255, 204, 0, 0.2),
+        inset 0 0 0 5px var(--background-color);
+  border: 1px solid var(--winning-color);
+  animation: showWinnerBoard 0.5s ease;
+}
+
+.winner-stats {
+  border: 2px dashed var(--winning-color);
 }
