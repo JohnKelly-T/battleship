@@ -203,3 +203,39 @@ body {
   background: var(--primary-color);
   color: var(--background-color);
 }
+
+.disabled {
+  pointer-events: none;
+}
+
+@keyframes showTurn {
+  from {
+    box-shadow: 0 0 20px rgba(96, 220, 224, 0.1),
+        inset 0 0 0 5px var(--background-color);
+  } to {
+    box-shadow: 0 0 20px 5px rgba(96, 220, 224, 0.2),
+        inset 0 0 0 5px var(--background-color);
+  }
+}
+
+@keyframes hideTurn {
+  from {
+    box-shadow: 0 0 20px 5px rgba(96, 220, 224, 0.2),
+        inset 0 0 0 5px var(--background-color);
+  } to {
+    box-shadow: 0 0 20px rgba(96, 220, 224, 0.1),
+        inset 0 0 0 5px var(--background-color);
+  }
+}
+
+.turn {
+  box-shadow: 0 0 20px 5px rgba(96, 220, 224, 0.2),
+        inset 0 0 0 5px var(--background-color);
+  animation: showTurn 0.5s ease-out;
+}
+
+.not-turn {
+  box-shadow: 0 0 20px rgba(96, 220, 224, 0.1),
+        inset 0 0 0 5px var(--background-color);
+  animation: hideTurn 0.5s ease-out;
+}
