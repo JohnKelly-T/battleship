@@ -21,6 +21,9 @@ export class DomController {
     let player2Container = gamepage.querySelector('.player2-container');
     let body = document.querySelector('body');
 
+    let player1RemainingShips = gamepage.querySelector('.player1-remaining-ships');
+    let player2RemainingShips = gamepage.querySelector('.player2-remaining-ships');
+
     body.appendChild(gamepage);
 
     player2Container.addEventListener('click', (e) => {
@@ -71,6 +74,14 @@ export class DomController {
           }, 800);
         }
       }
+
+      // update remaining ships count
+      player1RemainingShips.textContent =  this.player1.gameboard.remainingShips;
+      player2RemainingShips.textContent =  this.player2.gameboard.remainingShips;
+      
+
+      console.log("Player1 remaining: ", this.player1.gameboard.remainingShips, " Player2 remaining: ", this.player2.gameboard.remainingShips);
     });
   }
+
 }
