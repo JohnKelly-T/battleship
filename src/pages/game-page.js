@@ -23,6 +23,8 @@ export function renderGamePage(game) {
 
   let player1Stats = document.createElement('div');
   player1Stats.classList.add('stats');
+  player1Stats.classList.add('player1-stats');
+
   player1Stats.innerHTML = `
     <div class="name">You</div>
     <div class="remaining-ships-label">
@@ -39,6 +41,7 @@ export function renderGamePage(game) {
 
   let player2Stats = document.createElement('div');
   player2Stats.classList.add('stats');
+  player2Stats.classList.add('player2-stats');
   player2Stats.innerHTML = `
     <div class="name">AI</div>
     <div class="remaining-ships-label">
