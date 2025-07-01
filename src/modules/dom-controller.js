@@ -44,8 +44,14 @@ export class DomController {
           player2Gameboard.replaceWith(newPlayer2Board);
           player2Gameboard = newPlayer2Board;
 
-          // temporarily disable board
+          // temporarily disable board and remove turn
           player2Gameboard.classList.add('disabled');
+          player2Gameboard.classList.remove('turn');
+          player2Gameboard.classList.add('not-turn');
+
+          let player1Gameboard = document.querySelector('.player1-gameboard');
+          player1Gameboard.classList.add('turn');
+          player1Gameboard.classList.remove('not-turn');
           
           setTimeout(() => {
             // make AI player move
@@ -53,12 +59,16 @@ export class DomController {
             this.game.makeMove(moveX, moveY);
 
             // reload player1Gameboard
-            let player1Gameboard = document.querySelector('.player1-gameboard');
-            player1Gameboard.replaceWith(renderPlayer1Board(this.game));
+            let newPlayer1Board = renderPlayer1Board(this.game);
+            player1Gameboard.replaceWith(newPlayer1Board);
+
+            newPlayer1Board.classList.add('not-turn');
 
             // enable board again
             player2Gameboard.classList.remove('disabled');
-          }, 500);
+            player2Gameboard.classList.add('turn');
+            player2Gameboard.classList.remove('not-turn');
+          }, 800);
         }
       }
     });
