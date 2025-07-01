@@ -47,6 +47,16 @@ export class DomController {
           player2Gameboard.replaceWith(newPlayer2Board);
           player2Gameboard = newPlayer2Board;
 
+          // update remaining ships count
+          player1RemainingShips.textContent =  this.player1.gameboard.remainingShips;
+          player2RemainingShips.textContent =  this.player2.gameboard.remainingShips;
+
+          // check if game over
+          if (this.game.isOver()) {
+            this.showGameOver();
+            return;
+          }
+
           // temporarily disable board and remove turn
           player2Gameboard.classList.add('disabled');
           player2Gameboard.classList.remove('turn');
@@ -67,21 +77,64 @@ export class DomController {
 
             newPlayer1Board.classList.add('not-turn');
 
+            // update remaining ships count
+            player1RemainingShips.textContent =  this.player1.gameboard.remainingShips;
+            player2RemainingShips.textContent =  this.player2.gameboard.remainingShips;
+
+            // check if game over
+            if (this.game.isOver()) {
+              this.showGameOver();
+              return;
+            }
+
             // enable board again
             player2Gameboard.classList.remove('disabled');
             player2Gameboard.classList.add('turn');
             player2Gameboard.classList.remove('not-turn');
-          }, 800);
+          }, 0);
         }
       }
-
-      // update remaining ships count
-      player1RemainingShips.textContent =  this.player1.gameboard.remainingShips;
-      player2RemainingShips.textContent =  this.player2.gameboard.remainingShips;
-      
-
-      console.log("Player1 remaining: ", this.player1.gameboard.remainingShips, " Player2 remaining: ", this.player2.gameboard.remainingShips);
     });
   }
 
+  showGameOver() {
+    // disable boards and remove turn styles
+
+    let gameboards = document.querySelectorAll('.gameboard');
+
+    gameboards.forEach((gameboard) => {
+      gameboard.classList.add('disabled');
+      gameboard.classList.remove('turn');
+      gameboard.classList.remove('not-turn');
+    })
+
+    // get game winner
+    let winner = this.player1.gameboard.areAllShipsSunk() ? 'player2' : 'player1';
+
+    let winnerBoard;
+    let winnerStats;
+
+    if (winner === 'player1') {
+      winnerBoard = document.querySelector('.player1-gameboard');
+      winnerStats = document.querySelector('.player1-stats');
+    } else if (winner === 'player2') {
+      winnerBoard = document.querySelector('.player2-gameboard');
+      winnerStats = document.querySelector('.player2-stats');
+    }
+
+    // apply winning styles
+    winnerBoard.classList.add('winner-board');
+    winnerStats.classList.add('winner-stats');
+
+    // append winning crown
+    let winnerName = winnerStats.querySelector('.name');
+    let crown = document.createElement('div');
+    crown.classList.add('crown');
+    crown.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path fill="none" stroke="#FFCC00" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 18h14M5 14h14l1-9l-4 3l-4-5l-4 5l-4-3z" />
+      </svg>`;
+
+    winnerName.appendChild(crown);
+  }
 }
