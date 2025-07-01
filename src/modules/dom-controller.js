@@ -33,19 +33,21 @@ export class DomController {
           return;
         }
 
+        let targetX = e.target.getAttribute('data-x');
+        let targetY = e.target.getAttribute('data-y');
 
         // perform attack on player2 board
-        if (
-          this.game.makeMove(
-            e.target.getAttribute('data-x'),
-            e.target.getAttribute('data-y')
-          )
-        ) {
+        if (this.game.makeMove(targetX, targetY)) {
           // reload player2Gameboard
           let player2Gameboard = document.querySelector('.player2-gameboard');
           let newPlayer2Board = renderPlayer2Board(this.game);
           player2Gameboard.replaceWith(newPlayer2Board);
           player2Gameboard = newPlayer2Board;
+
+          // add animation if hit
+          if (this.player2.gameboard.receivedAttacks[targetY][targetX] === 'hit') {
+            this.addHitAnimation('player2', targetX, targetY);
+          }
 
           // update remaining ships count
           player1RemainingShips.textContent =  this.player1.gameboard.remainingShips;
@@ -75,6 +77,11 @@ export class DomController {
             let newPlayer1Board = renderPlayer1Board(this.game);
             player1Gameboard.replaceWith(newPlayer1Board);
 
+            // add animation if hit
+            if (this.player1.gameboard.receivedAttacks[moveY][moveX] === 'hit') {
+              this.addHitAnimation('player1', moveX, moveY);
+            }
+
             newPlayer1Board.classList.add('not-turn');
 
             // update remaining ships count
@@ -95,6 +102,43 @@ export class DomController {
         }
       }
     });
+  }
+
+  addHitAnimation(player, targetX, targetY) {
+
+    let query = `.${player}-gameboard .square[data-x="${targetX}"][data-y="${targetY}"] .mark`
+    let hitMark = document.querySelector(query);
+    hitMark.classList.add('hit-wave');
+
+    // if ship is sunk add explosion animation
+
+    let hitShip;
+
+    if (player === 'player1') {
+      hitShip = this.game.player1.gameboard.board[targetY][targetX];
+    } else {
+      hitShip = this.game.player2.gameboard.board[targetY][targetX];
+    }
+
+    if (hitShip.isSunk()) {
+      let startCoord = hitShip.startCoord;
+
+      for (let i = 0; i < hitShip.length; i++) {
+        let shipX = startCoord[0];
+        let shipY = startCoord[1];
+
+        if (hitShip.orientation === 'horizontal') {
+          shipX += i;
+        } else {
+          shipY += i;
+        }
+
+        let query = `.${player}-gameboard .square[data-x="${shipX}"][data-y="${shipY}"] .explosion`
+        let explosionMark = document.querySelector(query);
+        explosionMark.classList.add('explode-wave');
+
+      }
+    }
   }
 
   showGameOver() {

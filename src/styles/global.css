@@ -156,10 +156,27 @@ body {
   border-radius: 50%;
 }
 
+@keyframes targetHit {
+  0% {
+    box-shadow: var(--hit-mark-shadow);
+  } 
+  20% {
+    box-shadow: var(--hit-mark-shadow),
+    0 0 20px 5px rgba(255, 0, 55, 0.9);
+  }
+  100% {
+    box-shadow: var(--hit-mark-shadow);
+  }
+}
+
 .hit {
   background: var(--red);
   box-shadow: var(--hit-mark-shadow);
   border: 1px solid var(--hit-mark-stroke);
+}
+
+.hit-wave {
+  animation: targetHit 1s ease-out;
 }
 
 .miss {
@@ -172,6 +189,22 @@ body {
   background: var(--background-color);
   box-shadow: var(--miss-mark-shadow);
   border: 1px solid var(--miss-mark-stroke);
+}
+
+@keyframes explode {
+  0% {
+    box-shadow: 0 3px 2px rgba(255, 0, 55, 0.7);
+  } 
+  20% {
+    box-shadow: 0 3px 20px 2px rgba(255, 0, 55, 1);
+  }
+  100% {
+    box-shadow: none;
+  }
+}
+
+.explode-wave {
+  animation: explode 1s ease-out;
 }
 
 .explosion {
