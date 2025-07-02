@@ -321,3 +321,175 @@ body {
 .winner-stats {
   border: 2px dashed var(--winning-color);
 }
+
+/* start page */
+.start-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+}
+
+.start-menu-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8vw;
+}
+
+.board-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.click-to-rotate, .place-your-ships {
+  font-size: 0.8rem;
+  font-weight: 200;
+  color: #eee;
+}
+
+.start-gameboard {
+  width: auto;
+}
+
+.start-menu-container .square {
+  width: 2.2rem;
+  aspect-ratio: 1;
+}
+
+.options-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.randomize-button, .reset-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 0.8rem;
+  font-weight: 200;
+  cursor: pointer;
+  padding-bottom: 0.5rem;
+}
+
+.options-container svg {
+  width: 1.5rem;
+  aspect-ratio: 1;
+}
+
+.start-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+}
+
+.start-menu .square::before {
+  display: none;
+}
+
+.start-title-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.start-title-container .logo {
+  width: 2.5rem;
+}
+
+.start-title-container .title {
+  font-size: 1.4rem;
+}
+
+.ship-placement-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.ship-placement-box {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas: 
+    "carrier    ."
+    "battleship patrol-boat"
+    "destroyer  submarine";
+  column-gap: 1rem;
+  row-gap: 1rem;
+  border: 2px dashed var(--stats-stroke-color);
+  border-radius: 5px;
+  padding: 1rem;
+}
+
+.ship-placement-box .ship {
+  background: var(--green);
+  border: 1px solid var(--player1-ship-stroke);
+  box-shadow: var(--player1-ship-shadow);
+}
+
+.ship-placement-box .ship, .ship-placement-box .square {
+  pointer-events: none;
+}
+
+/* ships */
+.carrier, .battleship, .destroyer, .submarine, .patrol-boat {
+  display: flex;
+  width: min-content;
+  gap: 2px;
+}
+
+.carrier {
+  grid-area: carrier;
+}
+
+.battleship {
+  grid-area: battleship;
+}
+
+.destroyer {
+  grid-area: destroyer;
+}
+
+.submarine {
+  grid-area: submarine;
+}
+
+.patrol-boat {
+  display: flex;
+  justify-self: end;
+  grid-area: patrol-boat;
+}
+
+.start-button {
+  color: inherit;
+  font-weight: 500;
+  background: none;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  padding: 0.2rem 2rem;
+  cursor: pointer;
+}
+
+.start-button:hover {
+  background: var(--primary-color);
+  color: var(--background-color);
+}
+
+.attribution-container {
+  display: flex;
+  justify-content: center;
+}
