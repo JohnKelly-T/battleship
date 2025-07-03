@@ -13,17 +13,17 @@ export class Gameboard {
 
     switch(shipType) {
       case 'carrier': 
-        ship = new Ship(5);
+        ship = new Ship(5, shipType);
         break;
       case 'battleship':
-        ship = new Ship(4);
+        ship = new Ship(4, shipType);
         break;
       case 'destroyer':
       case 'submarine':
-        ship = new Ship(3);
+        ship = new Ship(3, shipType);
         break;
       case 'patrolBoat':
-        ship = new Ship(2);
+        ship = new Ship(2, shipType);
         break;
     }
 

@@ -136,6 +136,7 @@ export function renderStartBoard(game) {
       if (squareItem instanceof Ship) {
         let ship = document.createElement('div');
         ship.classList.add('ship');
+        ship.setAttribute('data-ship-type', squareItem.type);
 
         square.appendChild(ship);
       }
