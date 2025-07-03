@@ -1,4 +1,5 @@
 import { renderGamePage } from "../pages/game-page";
+import { renderStartPage } from "../pages/start-page";
 import { renderPlayer1Board } from "./render-gameboard";
 import { renderPlayer2Board } from "./render-gameboard";
 import { Player } from "./player";
@@ -10,10 +11,10 @@ export class DomController {
     this.player1 = new Player();
     this.player2 = new PlayerAI();
 
-    this.player1.placeShipsRandomly();
-    this.player2.placeShipsRandomly();
+    // this.player1.placeShipsRandomly();
+    // this.player2.placeShipsRandomly();
 
-    this.game = new Game(this.player1, this.player2);
+    // this.game = new Game(this.player1, this.player2);
   }
 
   loadGamePage() {
@@ -180,5 +181,13 @@ export class DomController {
       </svg>`;
 
     winnerName.appendChild(crown);
+  }
+
+  loadStartPage() {
+    let body = document.querySelector('body');
+    let startPage = renderStartPage();
+
+    body.appendChild(startPage);
+
   }
 }
