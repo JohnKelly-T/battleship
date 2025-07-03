@@ -215,6 +215,8 @@ export class DomController {
         this.startX = e.clientX;
         this.startY = e.clientY;
 
+        this.beingDragged.style.cursor = 'grabbing';
+
         document.addEventListener('mousemove', this.dragStart);
         document.addEventListener('mouseup', this.dragEnd);
       });
@@ -239,7 +241,7 @@ export class DomController {
 
     this.beingDragged.style.visibility = 'hidden'; // get element being hovered at by setting style to hidden
     let dropTarget = document.elementFromPoint(rect.left, rect.top + (elementHeight / 2)); // using elementHeight / 2 to get the left center point of the element
-
+    this.beingDragged.style.visibility = 'visible';
 
     console.log('drop target: ', dropTarget);
 
@@ -252,17 +254,18 @@ export class DomController {
         this.beingDragged.getAttribute('data-ship-type')
       ) 
 
-      // return element to original place
-      this.beingDragged.style.top = 0;
-      this.beingDragged.style.left = 0;
-
       if (isPlaced) {
-        // hide element with placed class
-        this.beingDragged.classList.add('placed');
-      } else {
-        this.beingDragged.style.visibility = 'visible';
-      }
+        this.beingDragged.style.visibility = 'hidden';
+      } 
+    } else {
+      this.beingDragged.style.visibility = 'visible';
     }
+
+    // return element to original place
+    this.beingDragged.style.top = 0;
+    this.beingDragged.style.left = 0;
+
+    this.beingDragged.style.cursor = 'grab';
 
     document.removeEventListener('mousemove', this.dragStart);
     document.removeEventListener('mouseup', this.dragEnd);
