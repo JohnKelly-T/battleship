@@ -170,7 +170,3 @@ export class Gameboard {
     return true;
   }
 }
-
-let gameboard = new Gameboard();
-
-gameboard.placeShip('carrier', 0, 8, 'horizontal');
