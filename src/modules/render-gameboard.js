@@ -116,3 +116,33 @@ export function renderPlayer2Board(game) {
 
   return playerBoard;
 }
+
+export function renderStartBoard(game) {
+
+  let playerBoard = document.createElement('div');
+  playerBoard.classList.add('start-gameboard');
+  playerBoard.classList.add('gameboard');
+
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
+      let square = document.createElement('div');
+      square.classList.add('square');
+      square.setAttribute('data-y', i);
+      square.setAttribute('data-x', j);
+
+      let squareItem = game.player1.gameboard.board[i][j];
+
+      // add ship
+      if (squareItem instanceof Ship) {
+        let ship = document.createElement('div');
+        ship.classList.add('ship');
+
+        square.appendChild(ship);
+      }
+
+      playerBoard.appendChild(square);
+    } 
+  }
+
+  return playerBoard;
+}
