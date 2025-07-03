@@ -237,10 +237,11 @@ export class DomController {
     this.isDragging = false;
 
     let rect = this.beingDragged.getBoundingClientRect();
-    let elementHeight = this.beingDragged.offsetHeight;
+    let offsetY = this.beingDragged.querySelector('.square').offsetHeight / 2;
+    let offsetX = this.beingDragged.querySelector('.square').offsetWidth / 2;
 
     this.beingDragged.style.visibility = 'hidden'; // get element being hovered at by setting style to hidden
-    let dropTarget = document.elementFromPoint(rect.left, rect.top + (elementHeight / 2)); // using elementHeight / 2 to get the left center point of the element
+    let dropTarget = document.elementFromPoint(rect.left + offsetX, rect.top + offsetY); // using elementHeight / 2 to get the left center point of the element
     this.beingDragged.style.visibility = 'visible';
 
     console.log('drop target: ', dropTarget);
