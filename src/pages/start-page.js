@@ -138,7 +138,7 @@ export function renderStartPage() {
 
   let patrolBoat = document.createElement('div');
   patrolBoat.classList.add('patrol-boat');
-  patrolBoat.setAttribute('data-ship-type', 'patrol-boat');
+  patrolBoat.setAttribute('data-ship-type', 'patrolBoat');
 
   for (let i = 0; i < 2; i++) {
     let square = document.createElement('div');
