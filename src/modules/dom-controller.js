@@ -2,6 +2,7 @@ import { renderGamePage } from "../pages/game-page";
 import { renderStartPage } from "../pages/start-page";
 import { renderPlayer1Board } from "./render-gameboard";
 import { renderPlayer2Board } from "./render-gameboard";
+import { renderStartBoard } from "./render-gameboard";
 import { Player } from "./player";
 import { PlayerAI } from "./player-ai";
 import { Game } from "./game";
@@ -11,10 +12,22 @@ export class DomController {
     this.player1 = new Player();
     this.player2 = new PlayerAI();
 
+    // variables for drag event
+    this.isDragging = false;
+    this.startX;
+    this.startY;
+    this.newX;
+    this.newY;
+    this.beingDragged;
+
+    // bind methods
+    this.dragStart = this.dragStart.bind(this);
+    this.dragEnd = this.dragEnd.bind(this);
+
     // this.player1.placeShipsRandomly();
     // this.player2.placeShipsRandomly();
 
-    // this.game = new Game(this.player1, this.player2);
+    this.game = new Game(this.player1, this.player2);
   }
 
   loadGamePage() {
@@ -189,5 +202,101 @@ export class DomController {
 
     body.appendChild(startPage);
 
+    // add event listeners
+    let ships = document.querySelectorAll('.ship-placement-box > *');
+
+    // mouse down event
+    for (let ship of ships) {
+      ship.addEventListener('mousedown', (e) => {
+        console.log(ship.getAttribute('data-ship-type') + " is being clicked");
+        this.isDragging = true;
+        this.beingDragged = ship;
+
+        this.startX = e.clientX;
+        this.startY = e.clientY;
+
+        document.addEventListener('mousemove', this.dragStart);
+        document.addEventListener('mouseup', this.dragEnd);
+      });
+    }
+  }
+
+  dragStart(e) {
+    if (!this.isDragging) return;
+
+    this.newX = e.clientX - this.startX;
+    this.newY = e.clientY - this.startY;
+
+    this.beingDragged.style.top = this.newY + 'px';
+    this.beingDragged.style.left = this.newX + 'px';
+  }
+
+  dragEnd(e) {
+    this.isDragging = false;
+
+    let rect = this.beingDragged.getBoundingClientRect();
+    let elementHeight = this.beingDragged.offsetHeight;
+
+    this.beingDragged.style.visibility = 'hidden'; // get element being hovered at by setting style to hidden
+    let dropTarget = document.elementFromPoint(rect.left, rect.top + (elementHeight / 2)); // using elementHeight / 2 to get the left center point of the element
+
+
+    console.log('drop target: ', dropTarget);
+
+     
+    if (dropTarget.classList.contains('square')) {
+      // add ship to gameboard
+      let isPlaced = this.placeShip(
+        dropTarget.getAttribute('data-x'),
+        dropTarget.getAttribute('data-y'),
+        this.beingDragged.getAttribute('data-ship-type')
+      ) 
+
+      // return element to original place
+      this.beingDragged.style.top = 0;
+      this.beingDragged.style.left = 0;
+
+      if (isPlaced) {
+        // hide element with placed class
+        this.beingDragged.classList.add('placed');
+      } else {
+        this.beingDragged.style.visibility = 'visible';
+      }
+    }
+
+    document.removeEventListener('mousemove', this.dragStart);
+    document.removeEventListener('mouseup', this.dragEnd);
+  }
+
+  placeShip(x, y, shipType) {
+    let shipLength = 0;
+
+    switch (shipType) {
+      case 'carrier':
+        shipLength = 5;
+        break;
+      case 'battleship':
+        shipLength = 4;
+        break;
+      case 'destroyer':
+      case 'submarine':
+        shipLength = 3;
+        break;
+      case 'patrolBoat':
+        shipLength = 2;
+        break;
+    }
+
+    let isPlaced = this.player1.gameboard.placeShip(shipType, Number(x), Number(y), 'horizontal');
+
+    if (isPlaced) {
+      // rerender gameboard
+      let gameboard = document.querySelector('.start-gameboard');
+
+      gameboard.replaceWith(renderStartBoard(this.game));
+      return true;
+    } else {
+      return false;
+    }
   }
 }
