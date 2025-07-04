@@ -137,6 +137,9 @@ export function renderStartBoard(game) {
         let ship = document.createElement('div');
         ship.classList.add('ship');
         ship.setAttribute('data-ship-type', squareItem.type);
+        ship.setAttribute('data-y', i);
+        ship.setAttribute('data-x', j);
+        ship.setAttribute('data-orientation', squareItem.orientation);
 
         square.appendChild(ship);
       }
