@@ -23,6 +23,7 @@ export class DomController {
     // bind methods
     this.dragStart = this.dragStart.bind(this);
     this.dragEnd = this.dragEnd.bind(this);
+    this.rotateShip = this.rotateShip.bind(this);
 
     // this.player1.placeShipsRandomly();
     // this.player2.placeShipsRandomly();
@@ -236,7 +237,7 @@ export class DomController {
         document.addEventListener('mousemove', this.dragStart);
         document.addEventListener('mouseup', this.dragEnd);
       }
-    })
+    });
   }
 
   dragStart(e) {
@@ -293,21 +294,27 @@ export class DomController {
 
         // remove ship from ships
         this.player1.gameboard.removeShip(shipType);
-        console.log(this.player1.gameboard.ships);
 
         // place ship (if not valid, place ship again using original values)
         let isPlaced = this.placeShip(
           dropTarget.getAttribute('data-x'),
           dropTarget.getAttribute('data-y'),
-          shipType
+          shipType,
+          this.beingDragged.getAttribute('data-orientation')
         );
 
         if (!isPlaced) {
           this.placeShip(
             shipStartCoord[0],
             shipStartCoord[1],
-            shipType
+            shipType,
+            this.beingDragged.getAttribute('data-orientation')
           );
+        }
+
+        // if mouse didn't move, register as click event to rotate ship
+        if (this.startX === e.clientX && this.startY === e.clientY) {
+          this.rotateShip(e);
         }
       } else {
         // return ships to position
@@ -330,7 +337,8 @@ export class DomController {
         let isPlaced = this.placeShip(
           dropTarget.getAttribute('data-x'),
           dropTarget.getAttribute('data-y'),
-          this.beingDragged.getAttribute('data-ship-type')
+          this.beingDragged.getAttribute('data-ship-type'),
+          'horizontal'
         ) 
 
         if (isPlaced) {
@@ -351,7 +359,81 @@ export class DomController {
     document.removeEventListener('mouseup', this.dragEnd);
   }
 
-  placeShip(x, y, shipType) {
+  rotateShip(e) {
+    if (e.target.classList.contains('ship')) {
+      // get ship coordinates
+      let shipElement = e.target;
+      let pivotX = Number(shipElement.getAttribute('data-x'));
+      let pivotY = Number(shipElement.getAttribute('data-y'));
+
+      let shipObject = this.player1.gameboard.board[pivotY][pivotX];
+      let shipStartCoord = shipObject.startCoord;
+      let shipOrientation = shipObject.orientation;
+
+      // get offset of start coords from pivot element
+      let offsetX = shipStartCoord[0] - pivotX;
+      let offsetY = shipStartCoord[1] - pivotY;
+
+      // rotate clockwise
+      let newOffsetX = -offsetY;
+      let newOffsetY = offsetX;
+
+      let newShipX = pivotX + newOffsetX;
+      let newShipY = pivotY + newOffsetY;
+
+      // if ship is vertical, shift the anchor point to the left, if horizontal shift to top
+      if (shipOrientation === 'vertical') {
+        newShipX = newShipX - (shipObject.length - 1);
+      }
+
+      let newOrientation = shipOrientation === 'horizontal' ? 'vertical' : 'horizontal';
+
+      // remove ship from ships
+      this.player1.gameboard.removeShip(shipObject.type);
+
+      // place ship 
+      let isPlaced = this.placeShip(
+        newShipX,
+        newShipY,
+        shipObject.type,
+        newOrientation
+      );
+
+      // if not valid, rotate ship again clockwise until valid or back to original position
+      while (!isPlaced) {
+        offsetX = newShipX - pivotX;
+        offsetY = newShipY - pivotY;
+
+        // rotate clockwise
+        newOffsetX = -offsetY;
+        newOffsetY = offsetX;
+
+        newShipX = pivotX + newOffsetX;
+        newShipY = pivotY + newOffsetY;
+
+        // swap orientations
+        let temp = shipOrientation;
+        shipOrientation = newOrientation;
+        newOrientation = temp;
+
+        // if ship is vertical, shift the anchor point to the left, if horizontal shift to top
+        if (shipOrientation === 'vertical') {
+          newShipX = newShipX - (shipObject.length - 1);
+        }
+
+        isPlaced = this.placeShip(
+          newShipX,
+          newShipY,
+          shipObject.type,
+          newOrientation
+        );
+      }
+
+      console.log({pivotX, pivotY});
+    }
+  }
+
+  placeShip(x, y, shipType, orientation) {
     let shipLength = 0;
 
     switch (shipType) {
@@ -370,7 +452,7 @@ export class DomController {
         break;
     }
 
-    let isPlaced = this.player1.gameboard.placeShip(shipType, Number(x), Number(y), 'horizontal');
+    let isPlaced = this.player1.gameboard.placeShip(shipType, Number(x), Number(y), orientation);
 
     if (isPlaced) {
       // rerender gameboard
