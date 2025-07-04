@@ -203,12 +203,12 @@ export class DomController {
     body.appendChild(startPage);
 
     // add event listeners
+    let boardContainer = startPage.querySelector('.board-container');
     let ships = document.querySelectorAll('.ship-placement-box > *');
 
     // mouse down event
     for (let ship of ships) {
       ship.addEventListener('mousedown', (e) => {
-        console.log(ship.getAttribute('data-ship-type') + " is being clicked");
         this.isDragging = true;
         this.beingDragged = ship;
 
@@ -221,52 +221,131 @@ export class DomController {
         document.addEventListener('mouseup', this.dragEnd);
       });
     }
+
+    // mouse down event on gameboard
+    boardContainer.addEventListener('mousedown', (e) => {
+      if (e.target.classList.contains('ship')) {
+        this.isDragging = true;
+        this.beingDragged = e.target;
+
+        this.startX = e.clientX;
+        this.startY = e.clientY;
+
+        this.beingDragged.style.cursor = 'grabbing';
+
+        document.addEventListener('mousemove', this.dragStart);
+        document.addEventListener('mouseup', this.dragEnd);
+      }
+    })
   }
 
   dragStart(e) {
     if (!this.isDragging) return;
 
-    this.newX = e.clientX - this.startX;
-    this.newY = e.clientY - this.startY;
+    // for moving ship within gameboard
+    if (this.beingDragged.classList.contains('ship')) {
 
-    this.beingDragged.style.top = this.newY + 'px';
-    this.beingDragged.style.left = this.newX + 'px';
+      // get ship type
+      let shipType = this.beingDragged.getAttribute('data-ship-type');
+      let query = `.ship[data-ship-type=${shipType}]`;
+      let shipParts = document.querySelectorAll(query);
+
+      this.newX = e.clientX - this.startX;
+      this.newY = e.clientY - this.startY;
+
+      // move ship parts
+      for (let ship of shipParts) {
+        ship.style.setProperty('--offsetY', this.newY + 'px');
+        ship.style.setProperty('--offsetX', this.newX + 'px');
+      }
+
+    } else {
+      this.newX = e.clientX - this.startX;
+      this.newY = e.clientY - this.startY;
+
+      this.beingDragged.style.top = this.newY + 'px';
+      this.beingDragged.style.left = this.newX + 'px';
+    }
+
+    
   }
 
   dragEnd(e) {
     this.isDragging = false;
 
-    let rect = this.beingDragged.getBoundingClientRect();
-    let offsetY = this.beingDragged.querySelector('.square').offsetHeight / 2;
-    let offsetX = this.beingDragged.querySelector('.square').offsetWidth / 2;
+    if (this.beingDragged.classList.contains('ship')) {
+      let shipType = this.beingDragged.getAttribute('data-ship-type');
+      let query = `.ship[data-ship-type=${shipType}]`;
+      let shipParts = document.querySelectorAll(query);
 
-    this.beingDragged.style.visibility = 'hidden'; // get element being hovered at by setting style to hidden
-    let dropTarget = document.elementFromPoint(rect.left + offsetX, rect.top + offsetY); // using elementHeight / 2 to get the left center point of the element
-    this.beingDragged.style.visibility = 'visible';
+      let rect = shipParts[0].getBoundingClientRect();
+      let offsetY = shipParts[0].offsetHeight / 2;
+      let offsetX = shipParts[0].offsetWidth / 2;
 
-    console.log('drop target: ', dropTarget);
+      shipParts[0].style.visibility = 'hidden'; // get element being hovered at by setting style to hidden
+      let dropTarget = document.elementFromPoint(rect.left + offsetX, rect.top + offsetY); // using elementHeight / 2 to get the left center point of the element
+      shipParts[0].style.visibility = 'visible';
 
-     
-    if (dropTarget.classList.contains('square')) {
-      // add ship to gameboard
-      let isPlaced = this.placeShip(
-        dropTarget.getAttribute('data-x'),
-        dropTarget.getAttribute('data-y'),
-        this.beingDragged.getAttribute('data-ship-type')
-      ) 
+      if (dropTarget.classList.contains('square')) {
+        // todo
+        let shipObject = this.player1.gameboard.ships.find(ship => ship.type === shipType);
+        let shipStartCoord = shipObject.startCoord;
 
-      if (isPlaced) {
-        this.beingDragged.style.visibility = 'hidden';
-      } 
+        // remove ship from ships
+        this.player1.gameboard.removeShip(shipType);
+        console.log(this.player1.gameboard.ships);
+
+        // place ship (if not valid, place ship again using original values)
+        let isPlaced = this.placeShip(
+          dropTarget.getAttribute('data-x'),
+          dropTarget.getAttribute('data-y'),
+          shipType
+        );
+
+        if (!isPlaced) {
+          this.placeShip(
+            shipStartCoord[0],
+            shipStartCoord[1],
+            shipType
+          );
+        }
+      } else {
+        // return ships to position
+        for (let ship of shipParts) {
+          ship.style.setProperty('--offsetY', 0 + 'px');
+          ship.style.setProperty('--offsetX', 0 + 'px');
+        }
+      }
     } else {
+      let rect = this.beingDragged.getBoundingClientRect();
+      let offsetY = this.beingDragged.querySelector('.square').offsetHeight / 2;
+      let offsetX = this.beingDragged.querySelector('.square').offsetWidth / 2;
+
+      this.beingDragged.style.visibility = 'hidden'; // get element being hovered at by setting style to hidden
+      let dropTarget = document.elementFromPoint(rect.left + offsetX, rect.top + offsetY); // using elementHeight / 2 to get the left center point of the element
       this.beingDragged.style.visibility = 'visible';
+      
+      if (dropTarget.classList.contains('square')) {
+        // add ship to gameboard
+        let isPlaced = this.placeShip(
+          dropTarget.getAttribute('data-x'),
+          dropTarget.getAttribute('data-y'),
+          this.beingDragged.getAttribute('data-ship-type')
+        ) 
+
+        if (isPlaced) {
+          this.beingDragged.style.visibility = 'hidden';
+        } 
+      } else {
+        this.beingDragged.style.visibility = 'visible';
+      }
+
+      // return element to original place
+      this.beingDragged.style.top = 0;
+      this.beingDragged.style.left = 0;
+
+      this.beingDragged.style.cursor = 'grab';
     }
-
-    // return element to original place
-    this.beingDragged.style.top = 0;
-    this.beingDragged.style.left = 0;
-
-    this.beingDragged.style.cursor = 'grab';
 
     document.removeEventListener('mousemove', this.dragStart);
     document.removeEventListener('mouseup', this.dragEnd);
