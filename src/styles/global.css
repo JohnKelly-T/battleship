@@ -5,6 +5,10 @@
     font-style: normal;
 }
 
+* {
+  user-select: none;
+}
+
 :root {
   --background-color: #0E1A23;
   --primary-color: #3EF3FA;
@@ -356,6 +360,25 @@ body {
   width: auto;
 }
 
+.start-gameboard .ship {
+  --offsetX: 0px;
+  --offsetY: 0px;
+  pointer-events: auto;
+  cursor: grab;
+  top: calc(50% + var(--offsetY));
+  left: calc(50% + var(--offsetX));
+}
+
+/* for bigger mouse event area */
+.start-gameboard .ship::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 150%;
+  height: 150%;
+}
+
 .start-menu-container .square {
   width: 2.2rem;
   aspect-ratio: 1;
@@ -435,7 +458,17 @@ body {
   padding: 1rem;
 }
 
-.ship-placement-box .ship {
+.ship-placement-box > * {
+  position: relative;
+  cursor: grab;
+}
+
+.ship-placement-box > * {
+  position: relative;
+  cursor: grab;
+}
+
+.start-gameboard .ship, .ship-placement-box .ship {
   background: var(--green);
   border: 1px solid var(--player1-ship-stroke);
   box-shadow: var(--player1-ship-shadow);
@@ -492,4 +525,9 @@ body {
 .attribution-container {
   display: flex;
   justify-content: center;
+}
+
+.placed {
+  visibility: hidden;
+  pointer-events: none;
 }
