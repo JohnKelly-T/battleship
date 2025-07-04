@@ -36,6 +36,7 @@ export class DomController {
     let gamepage = renderGamePage(this.game);
     let player2Container = gamepage.querySelector('.player2-container');
     let body = document.querySelector('body');
+    let quitButton = gamepage.querySelector('.quit-button');
 
     let player1RemainingShips = gamepage.querySelector('.player1-remaining-ships');
     let player2RemainingShips = gamepage.querySelector('.player2-remaining-ships');
@@ -117,6 +118,11 @@ export class DomController {
           }, 800);
         }
       }
+    });
+
+    quitButton.addEventListener('click', (e) => {
+      this.clearBody();
+      this.loadStartPage();
     });
   }
 
