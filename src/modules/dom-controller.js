@@ -6,6 +6,7 @@ import { renderStartBoard } from "./render-gameboard";
 import { Player } from "./player";
 import { PlayerAI } from "./player-ai";
 import { Game } from "./game";
+import { Gameboard } from "./gameboard";
 
 export class DomController {
   constructor() {
@@ -24,6 +25,7 @@ export class DomController {
     this.dragStart = this.dragStart.bind(this);
     this.dragEnd = this.dragEnd.bind(this);
     this.rotateShip = this.rotateShip.bind(this);
+    this.randomize = this.randomize.bind(this);
 
     // this.player1.placeShipsRandomly();
     // this.player2.placeShipsRandomly();
@@ -206,6 +208,7 @@ export class DomController {
     // add event listeners
     let boardContainer = startPage.querySelector('.board-container');
     let ships = document.querySelectorAll('.ship-placement-box > *');
+    let randomizeButton = document.querySelector('.randomize-button');
 
     // mouse down event
     for (let ship of ships) {
@@ -238,6 +241,8 @@ export class DomController {
         document.addEventListener('mouseup', this.dragEnd);
       }
     });
+
+    randomizeButton.addEventListener('click', this.randomize);
   }
 
   dragStart(e) {
@@ -463,5 +468,26 @@ export class DomController {
     } else {
       return false;
     }
+  }
+
+  randomize(e) {
+    // clear board in case ships are placed
+    this.player1.gameboard = new Gameboard();
+
+    // place ships randomly 
+    this.player1.placeShipsRandomly();
+
+    // return all placement ships in box and set to placed
+    let ships = document.querySelectorAll('.ship-placement-box > *');
+
+    for (let ship of ships) {
+      ship.style.top = 0 + 'px';
+      ship.style.left = 0 + 'px';
+      ship.style.visibility = 'hidden';
+    }
+
+    // rerender gameboard
+    let gameboard = document.querySelector('.start-gameboard');
+    gameboard.replaceWith(renderStartBoard(this.game));
   }
 }
