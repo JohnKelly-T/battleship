@@ -122,6 +122,9 @@ export class DomController {
 
     quitButton.addEventListener('click', (e) => {
       this.clearBody();
+      // clear board
+      this.player1.gameboard = new Gameboard();
+
       this.loadStartPage();
     });
   }
