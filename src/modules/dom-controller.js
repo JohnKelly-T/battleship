@@ -439,24 +439,6 @@ export class DomController {
   }
 
   placeShip(x, y, shipType, orientation) {
-    let shipLength = 0;
-
-    switch (shipType) {
-      case 'carrier':
-        shipLength = 5;
-        break;
-      case 'battleship':
-        shipLength = 4;
-        break;
-      case 'destroyer':
-      case 'submarine':
-        shipLength = 3;
-        break;
-      case 'patrolBoat':
-        shipLength = 2;
-        break;
-    }
-
     let isPlaced = this.player1.gameboard.placeShip(shipType, Number(x), Number(y), orientation);
 
     if (isPlaced) {
