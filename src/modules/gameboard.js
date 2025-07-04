@@ -169,4 +169,8 @@ export class Gameboard {
 
     return true;
   }
+
+  removeShip(type) {
+    this.ships = this.ships.filter(ship => ship.type !== type);
+  }
 }
