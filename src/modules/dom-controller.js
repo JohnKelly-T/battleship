@@ -10,9 +10,6 @@ import { Gameboard } from "./gameboard";
 
 export class DomController {
   constructor() {
-    this.player1 = new Player();
-    this.player2 = new PlayerAI();
-
     // variables for drag event
     this.isDragging = false;
     this.startX;
@@ -28,6 +25,13 @@ export class DomController {
     this.randomize = this.randomize.bind(this);
     this.reset = this.reset.bind(this);
     this.start = this.start.bind(this);
+
+    this.createNewGame();
+  }
+
+  createNewGame() {
+    this.player1 = new Player();
+    this.player2 = new PlayerAI();
 
     this.game = new Game(this.player1, this.player2);
   }
@@ -122,8 +126,8 @@ export class DomController {
 
     quitButton.addEventListener('click', (e) => {
       this.clearBody();
-      // clear board
-      this.player1.gameboard = new Gameboard();
+      // create new game
+      this.createNewGame();
 
       this.loadStartPage();
     });
