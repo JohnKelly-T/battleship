@@ -1,4 +1,6 @@
-export function renderStartPage() {
+import { renderStartBoard } from "../modules/render-gameboard";
+
+export function renderStartPage(game) {
   let startPage = document.createElement('div');
   startPage.classList.add('start-page-container');
 
@@ -12,22 +14,7 @@ export function renderStartPage() {
   clickToRotate.classList.add('click-to-rotate');
   clickToRotate.textContent = 'Click ship to rotate it';
 
-  let startGameboard = document.createElement('div');
-  startGameboard.classList.add('gameboard');
-  startGameboard.classList.add('start-gameboard');
-
-  // add gameboard squares
-  for (let i = 0; i < 10; i++) {
-    for (let j = 0; j < 10; j++) {
-      let square = document.createElement('div');
-      square.classList.add('square');
-
-      square.setAttribute('data-x', j);
-      square.setAttribute('data-y', i);
-
-      startGameboard.appendChild(square);
-    }
-  }
+  let startGameboard = renderStartBoard(game);
 
   let optionsContainer = document.createElement('div');
   optionsContainer.classList.add('options-container');

@@ -206,7 +206,7 @@ export class DomController {
 
   loadStartPage() {
     let body = document.querySelector('body');
-    let startPage = renderStartPage();
+    let startPage = renderStartPage(this.game);
 
     body.appendChild(startPage);
 
