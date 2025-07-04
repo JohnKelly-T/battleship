@@ -228,9 +228,6 @@ describe('Gameboard class', () => {
       for (let row of gameboard.receivedAttacks) {
         outString += JSON.stringify(row) + '\n'
       }
-
-      console.log(outString);
-
     });
   });
 
@@ -263,4 +260,35 @@ describe('Gameboard class', () => {
       ).toBe(true);
     })
   })
+
+  describe('removeShip method', () => {
+    beforeEach(() => {
+      gameboard.placeShip('carrier', 0, 0, 'horizontal');
+      gameboard.placeShip('battleship', 0, 2, 'horizontal');
+      gameboard.placeShip('destroyer', 0, 4, 'horizontal');
+      gameboard.placeShip('submarine', 0, 6, 'horizontal');
+      gameboard.placeShip('patrolBoat', 2, 8, 'horizontal');
+    });
+
+    test('removes a ship', () => {
+      expect(gameboard.ships.length).toBe(5);
+
+      gameboard.removeShip('carrier');
+
+      expect(gameboard.ships.length).toBe(4);
+    });
+
+    test('removes the correct ship', () => {
+      expect(gameboard.ships.length).toBe(5);
+      expect(
+        gameboard.ships.find((ship) => ship.type === 'battleship')
+      ).toBeInstanceOf(Ship);
+
+      gameboard.removeShip('battleship');
+
+      expect(
+        gameboard.ships.find((ship) => ship.type === 'battleship')
+      ).toBe(undefined);
+    });
+  }); 
 });   
