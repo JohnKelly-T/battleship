@@ -270,7 +270,7 @@ describe('Gameboard class', () => {
       gameboard.placeShip('patrolBoat', 2, 8, 'horizontal');
     });
 
-    test('removes a ship', () => {
+    test('removes a ship from the ships array', () => {
       expect(gameboard.ships.length).toBe(5);
 
       gameboard.removeShip('carrier');
@@ -278,7 +278,7 @@ describe('Gameboard class', () => {
       expect(gameboard.ships.length).toBe(4);
     });
 
-    test('removes the correct ship', () => {
+    test('removes the correct ship from ships array', () => {
       expect(gameboard.ships.length).toBe(5);
       expect(
         gameboard.ships.find((ship) => ship.type === 'battleship')
@@ -289,6 +289,22 @@ describe('Gameboard class', () => {
       expect(
         gameboard.ships.find((ship) => ship.type === 'battleship')
       ).toBe(undefined);
+    });
+
+    test('removes ship from board', () => {
+        gameboard.removeShip('destroyer');
+
+        const flattenedBoard = gameboard.board.flat();
+
+        expect(
+          flattenedBoard.find((item) => {
+            if (item instanceof Ship) {
+              return item.type === 'destroyer' ? true : false;
+            } else {
+              return false;
+            }
+          })
+        ).toBe(undefined);
     });
   }); 
 });   
