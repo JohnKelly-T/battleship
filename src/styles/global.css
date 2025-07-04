@@ -526,8 +526,3 @@ body {
   display: flex;
   justify-content: center;
 }
-
-.placed {
-  visibility: hidden;
-  pointer-events: none;
-}
