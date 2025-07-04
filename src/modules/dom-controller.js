@@ -27,9 +27,7 @@ export class DomController {
     this.rotateShip = this.rotateShip.bind(this);
     this.randomize = this.randomize.bind(this);
     this.reset = this.reset.bind(this);
-
-    // this.player1.placeShipsRandomly();
-    // this.player2.placeShipsRandomly();
+    this.start = this.start.bind(this);
 
     this.game = new Game(this.player1, this.player2);
   }
@@ -211,6 +209,8 @@ export class DomController {
     let ships = document.querySelectorAll('.ship-placement-box > *');
     let randomizeButton = document.querySelector('.randomize-button');
     let resetButton = document.querySelector('.reset-button');
+    let startButton = document.querySelector('.start-button');
+
 
     // mouse down event
     for (let ship of ships) {
@@ -246,6 +246,7 @@ export class DomController {
 
     randomizeButton.addEventListener('click', this.randomize);
     resetButton.addEventListener('click', this.reset);
+    startButton.addEventListener('click', this.start);
   }
 
   dragStart(e) {
@@ -492,5 +493,24 @@ export class DomController {
     // rerender gameboard
     let gameboard = document.querySelector('.start-gameboard');
     gameboard.replaceWith(renderStartBoard(this.game));
+  }
+
+  start(e) {
+    // check if board is valid
+
+    // board must have 5 ships
+    if (this.game.player1.gameboard.ships.length === 5) {
+      // place ships randomly for ai
+      this.player2.placeShipsRandomly();
+
+      // switch to game page
+      this.clearBody();
+      this.loadGamePage();
+    } 
+  }
+
+  clearBody() {
+    let body = document.querySelector('body');
+    body.innerHTML = '';
   }
 }
