@@ -1,8 +1,12 @@
-import { defineConfig } from "eslint/config";
+import { defineConfig, globalIgnores } from "eslint/config";
 import globals from "globals";
 import js from "@eslint/js";
 
 export default defineConfig([
+  globalIgnores([
+      "node_modules/",
+      "dist/",
+  ]),
   { files: ["**/*.{js,mjs,cjs}"] },
   {
     files: ["**/*.{js,mjs,cjs}"],
