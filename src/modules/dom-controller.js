@@ -136,10 +136,25 @@ export class DomController {
             let newPlayer1Board = renderPlayer1Board(this.game);
             player1Gameboard.replaceWith(newPlayer1Board);
 
-            // add animation if hit
+            // add animation and sounds
             if (this.player1.gameboard.receivedAttacks[moveY][moveX] === 'hit') {
               this.addHitAnimation('player1', moveX, moveY);
-            }
+              
+              if (this.game.player1.gameboard.board[moveY][moveX].isSunk()) {
+                this.explosion.pause();
+                this.explosion.currentTime = 0.5;
+                this.explosion.play();
+              } else {
+                this.hit.pause();
+                this.hit.currentTime = 0;
+                this.hit.play();
+              }
+
+            } else if (this.player1.gameboard.receivedAttacks[moveY][moveX] === 'miss') {
+              this.ping.pause();
+              this.ping.currentTime = 0;
+              this.ping.play();
+            } 
 
             newPlayer1Board.classList.add('not-turn');
 
@@ -157,7 +172,7 @@ export class DomController {
             player2Gameboard.classList.remove('disabled');
             player2Gameboard.classList.add('turn');
             player2Gameboard.classList.remove('not-turn');
-          }, 800);
+          }, 1000);
         }
       }
     });
