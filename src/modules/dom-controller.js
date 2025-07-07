@@ -309,7 +309,7 @@ export class DomController {
       let dropTarget = document.elementFromPoint(rect.left + offsetX, rect.top + offsetY); // using elementHeight / 2 to get the left center point of the element
       shipParts[0].style.visibility = 'visible';
 
-      if (dropTarget.classList.contains('square')) {
+      if (dropTarget !== null && dropTarget.classList.contains('square')) {
         // todo
         let shipObject = this.player1.gameboard.ships.find(ship => ship.type === shipType);
         let shipStartCoord = shipObject.startCoord;
@@ -354,7 +354,7 @@ export class DomController {
       let dropTarget = document.elementFromPoint(rect.left + offsetX, rect.top + offsetY); // using elementHeight / 2 to get the left center point of the element
       this.beingDragged.style.visibility = 'visible';
       
-      if (dropTarget.classList.contains('square')) {
+      if (dropTarget !== null && dropTarget.classList.contains('square')) {
         // add ship to gameboard
         let isPlaced = this.placeShip(
           dropTarget.getAttribute('data-x'),
