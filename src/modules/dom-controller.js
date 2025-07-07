@@ -181,6 +181,9 @@ export class DomController {
       this.clearBody();
       // create new game
       this.createNewGame();
+      // end ambient sounds
+      this.ambientSound.pause();
+      this.ambientSound.currentTime = 0;
 
       this.loadStartPage();
     });
