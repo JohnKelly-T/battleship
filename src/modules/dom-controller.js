@@ -8,6 +8,11 @@ import { PlayerAI } from "./player-ai";
 import { Game } from "./game";
 import { Gameboard } from "./gameboard";
 
+import underwaterAmbience from "../assets/audio/underwater-ambience.mp3";
+import sonarPing from "../assets/audio/sonar-ping.mp3";
+import shiptHit from "../assets/audio/hit.mp3";
+import shipExplosion from "../assets/audio/explosion.mp3";
+
 export class DomController {
   constructor() {
     // variables for drag event
@@ -27,6 +32,24 @@ export class DomController {
     this.start = this.start.bind(this);
 
     this.createNewGame();
+
+    // for game sounds
+    this.addAudio();
+  }
+
+  addAudio() {
+    this.ambientSound = new Audio(underwaterAmbience);
+    this.ambientSound.loop = true;
+    this.ambientSound.volume = 0.1;
+
+    this.ping = new Audio(sonarPing);
+    this.ping.volume = 0.1;
+
+    this.hit = new Audio(shiptHit);
+    this.hit.volume = 0.1;
+
+    this.explosion = new Audio(shipExplosion);
+    this.explosion.volume = 0.3;
   }
 
   createNewGame() {
@@ -65,10 +88,25 @@ export class DomController {
           player2Gameboard.replaceWith(newPlayer2Board);
           player2Gameboard = newPlayer2Board;
 
-          // add animation if hit
+          // add animation and sounds
           if (this.player2.gameboard.receivedAttacks[targetY][targetX] === 'hit') {
             this.addHitAnimation('player2', targetX, targetY);
-          }
+            
+            if (this.game.player2.gameboard.board[targetY][targetX].isSunk()) {
+              this.explosion.pause();
+              this.explosion.currentTime = 0.5;
+              this.explosion.play();
+            } else {
+              this.hit.pause();
+              this.hit.currentTime = 0;
+              this.hit.play();
+            }
+
+          } else if (this.player2.gameboard.receivedAttacks[targetY][targetX] === 'miss') {
+            this.ping.pause();
+            this.ping.currentTime = 0;
+            this.ping.play();
+          } 
 
           // update remaining ships count
           player1RemainingShips.textContent =  this.player1.gameboard.remainingShips;
@@ -515,6 +553,9 @@ export class DomController {
     if (this.game.player1.gameboard.ships.length === 5) {
       // place ships randomly for ai
       this.player2.placeShipsRandomly();
+
+      // play ambient audio
+      this.ambientSound.play();
 
       // switch to game page
       this.clearBody();
