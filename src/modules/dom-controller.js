@@ -91,7 +91,7 @@ export class DomController {
           
           setTimeout(() => {
             // make AI player move
-            let [moveX, moveY] = this.player2.getRandomMove(this.game.turnEnemy.gameboard);
+            let [moveX, moveY] = this.player2.getNextMove(this.game.turnEnemy.gameboard);
             this.game.makeMove(moveX, moveY);
 
             // reload player1Gameboard
