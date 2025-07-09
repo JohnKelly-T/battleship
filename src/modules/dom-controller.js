@@ -62,13 +62,13 @@ export class DomController {
 
   loadGamePage() {
     let gamepage = renderGamePage(this.game);
-    let player2Container = gamepage.querySelector('.player2-container');
-    let body = document.querySelector('body');
-    let quitButton = gamepage.querySelector('.quit-button');
-    let volumeButton = gamepage.querySelector('.volume-button');
+    let player2Container = gamepage.querySelector(".player2-container");
+    let body = document.querySelector("body");
+    let quitButton = gamepage.querySelector(".quit-button");
+    let volumeButton = gamepage.querySelector(".volume-button");
 
     // update volume button icon
-    if (this.muted === true ) {
+    if (this.muted === true) {
       volumeButton.innerHTML = `
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
             <path fill="currentColor" fill-rule="evenodd" d="M9.383 3.076A1 1 0 0 1 10 4v12a1 1 0 0 1-1.707.707L4.586 13H2a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h2.586l3.707-3.707a1 1 0 0 1 1.09-.217m2.91 4.217a1 1 0 0 1 1.414 0L15 8.586l1.293-1.293a1 1 0 1 1 1.414 1.414L16.414 10l1.293 1.293a1 1 0 0 1-1.414 1.414L15 11.414l-1.293 1.293a1 1 0 0 1-1.414-1.414L13.586 10l-1.293-1.293a1 1 0 0 1 0-1.414" clip-rule="evenodd" />
@@ -82,33 +82,39 @@ export class DomController {
       `;
     }
 
-    let player1RemainingShips = gamepage.querySelector('.player1-remaining-ships');
-    let player2RemainingShips = gamepage.querySelector('.player2-remaining-ships');
+    let player1RemainingShips = gamepage.querySelector(
+      ".player1-remaining-ships",
+    );
+    let player2RemainingShips = gamepage.querySelector(
+      ".player2-remaining-ships",
+    );
 
     body.appendChild(gamepage);
 
-    player2Container.addEventListener('click', (e) => {
-      if (e.target.classList.contains('square')) {
+    player2Container.addEventListener("click", (e) => {
+      if (e.target.classList.contains("square")) {
         // return if square is disabled
-        if (e.target.classList.contains('disabled')) {
+        if (e.target.classList.contains("disabled")) {
           return;
         }
 
-        let targetX = e.target.getAttribute('data-x');
-        let targetY = e.target.getAttribute('data-y');
+        let targetX = e.target.getAttribute("data-x");
+        let targetY = e.target.getAttribute("data-y");
 
         // perform attack on player2 board
         if (this.game.makeMove(targetX, targetY)) {
           // reload player2Gameboard
-          let player2Gameboard = document.querySelector('.player2-gameboard');
+          let player2Gameboard = document.querySelector(".player2-gameboard");
           let newPlayer2Board = renderPlayer2Board(this.game);
           player2Gameboard.replaceWith(newPlayer2Board);
           player2Gameboard = newPlayer2Board;
 
           // add animation and sounds
-          if (this.player2.gameboard.receivedAttacks[targetY][targetX] === 'hit') {
-            this.addHitAnimation('player2', targetX, targetY);
-            
+          if (
+            this.player2.gameboard.receivedAttacks[targetY][targetX] === "hit"
+          ) {
+            this.addHitAnimation("player2", targetX, targetY);
+
             if (this.game.player2.gameboard.board[targetY][targetX].isSunk()) {
               this.explosion.pause();
               this.explosion.currentTime = 0.5;
@@ -118,16 +124,19 @@ export class DomController {
               this.hit.currentTime = 0;
               this.hit.play();
             }
-
-          } else if (this.player2.gameboard.receivedAttacks[targetY][targetX] === 'miss') {
+          } else if (
+            this.player2.gameboard.receivedAttacks[targetY][targetX] === "miss"
+          ) {
             this.ping.pause();
             this.ping.currentTime = 0;
             this.ping.play();
-          } 
+          }
 
           // update remaining ships count
-          player1RemainingShips.textContent =  this.player1.gameboard.remainingShips;
-          player2RemainingShips.textContent =  this.player2.gameboard.remainingShips;
+          player1RemainingShips.textContent =
+            this.player1.gameboard.remainingShips;
+          player2RemainingShips.textContent =
+            this.player2.gameboard.remainingShips;
 
           // check if game over
           if (this.game.isOver()) {
@@ -136,17 +145,19 @@ export class DomController {
           }
 
           // temporarily disable board and remove turn
-          player2Gameboard.classList.add('disabled');
-          player2Gameboard.classList.remove('turn');
-          player2Gameboard.classList.add('not-turn');
+          player2Gameboard.classList.add("disabled");
+          player2Gameboard.classList.remove("turn");
+          player2Gameboard.classList.add("not-turn");
 
-          let player1Gameboard = document.querySelector('.player1-gameboard');
-          player1Gameboard.classList.add('turn');
-          player1Gameboard.classList.remove('not-turn');
-          
+          let player1Gameboard = document.querySelector(".player1-gameboard");
+          player1Gameboard.classList.add("turn");
+          player1Gameboard.classList.remove("not-turn");
+
           setTimeout(() => {
             // make AI player move
-            let [moveX, moveY] = this.player2.getNextMove(this.game.turnEnemy.gameboard);
+            let [moveX, moveY] = this.player2.getNextMove(
+              this.game.turnEnemy.gameboard,
+            );
             this.game.makeMove(moveX, moveY);
 
             // reload player1Gameboard
@@ -154,9 +165,11 @@ export class DomController {
             player1Gameboard.replaceWith(newPlayer1Board);
 
             // add animation and sounds
-            if (this.player1.gameboard.receivedAttacks[moveY][moveX] === 'hit') {
-              this.addHitAnimation('player1', moveX, moveY);
-              
+            if (
+              this.player1.gameboard.receivedAttacks[moveY][moveX] === "hit"
+            ) {
+              this.addHitAnimation("player1", moveX, moveY);
+
               if (this.game.player1.gameboard.board[moveY][moveX].isSunk()) {
                 this.explosion.pause();
                 this.explosion.currentTime = 0.5;
@@ -166,18 +179,21 @@ export class DomController {
                 this.hit.currentTime = 0;
                 this.hit.play();
               }
-
-            } else if (this.player1.gameboard.receivedAttacks[moveY][moveX] === 'miss') {
+            } else if (
+              this.player1.gameboard.receivedAttacks[moveY][moveX] === "miss"
+            ) {
               this.ping.pause();
               this.ping.currentTime = 0;
               this.ping.play();
-            } 
+            }
 
-            newPlayer1Board.classList.add('not-turn');
+            newPlayer1Board.classList.add("not-turn");
 
             // update remaining ships count
-            player1RemainingShips.textContent =  this.player1.gameboard.remainingShips;
-            player2RemainingShips.textContent =  this.player2.gameboard.remainingShips;
+            player1RemainingShips.textContent =
+              this.player1.gameboard.remainingShips;
+            player2RemainingShips.textContent =
+              this.player2.gameboard.remainingShips;
 
             // check if game over
             if (this.game.isOver()) {
@@ -186,15 +202,15 @@ export class DomController {
             }
 
             // enable board again
-            player2Gameboard.classList.remove('disabled');
-            player2Gameboard.classList.add('turn');
-            player2Gameboard.classList.remove('not-turn');
+            player2Gameboard.classList.remove("disabled");
+            player2Gameboard.classList.add("turn");
+            player2Gameboard.classList.remove("not-turn");
           }, 1000);
         }
       }
     });
 
-    quitButton.addEventListener('click', (e) => {
+    quitButton.addEventListener("click", (e) => {
       this.clearBody();
       // create new game
       this.createNewGame();
@@ -205,7 +221,7 @@ export class DomController {
       this.loadStartPage();
     });
 
-    volumeButton.addEventListener('click', (e) => {
+    volumeButton.addEventListener("click", (e) => {
       if (this.muted === true) {
         // unmute page
         this.muted = false;
@@ -216,7 +232,7 @@ export class DomController {
         this.explosion.volume = 0.3;
 
         // change volume button icon
-        let volumeButton = document.querySelector('.volume-button');
+        let volumeButton = document.querySelector(".volume-button");
         volumeButton.innerHTML = `
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
             <path fill="currentColor" fill-rule="evenodd" d="M9.383 3.076A1 1 0 0 1 10 4v12a1 1 0 0 1-1.707.707L4.586 13H2a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h2.586l3.707-3.707a1 1 0 0 1 1.09-.217m5.274-.147a1 1 0 0 1 1.414 0A9.97 9.97 0 0 1 19 10a9.97 9.97 0 0 1-2.929 7.071a1 1 0 0 1-1.414-1.414A7.97 7.97 0 0 0 17 10a7.97 7.97 0 0 0-2.343-5.657a1 1 0 0 1 0-1.414m-2.829 2.828a1 1 0 0 1 1.415 0A5.98 5.98 0 0 1 15 10a5.98 5.98 0 0 1-1.757 4.243a1 1 0 0 1-1.415-1.415A3.98 3.98 0 0 0 13 10a3.98 3.98 0 0 0-1.172-2.828a1 1 0 0 1 0-1.415" clip-rule="evenodd" />
@@ -224,7 +240,7 @@ export class DomController {
         `;
       } else {
         // mute page
-        this.muted = true; 
+        this.muted = true;
 
         this.ambientSound.volume = 0;
         this.hit.volume = 0;
@@ -232,27 +248,26 @@ export class DomController {
         this.explosion.volume = 0;
 
         // change volume button icon
-        let volumeButton = document.querySelector('.volume-button');
+        let volumeButton = document.querySelector(".volume-button");
         volumeButton.innerHTML = `
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
             <path fill="currentColor" fill-rule="evenodd" d="M9.383 3.076A1 1 0 0 1 10 4v12a1 1 0 0 1-1.707.707L4.586 13H2a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h2.586l3.707-3.707a1 1 0 0 1 1.09-.217m2.91 4.217a1 1 0 0 1 1.414 0L15 8.586l1.293-1.293a1 1 0 1 1 1.414 1.414L16.414 10l1.293 1.293a1 1 0 0 1-1.414 1.414L15 11.414l-1.293 1.293a1 1 0 0 1-1.414-1.414L13.586 10l-1.293-1.293a1 1 0 0 1 0-1.414" clip-rule="evenodd" />
           </svg>
         `;
-      } 
-    })
+      }
+    });
   }
 
   addHitAnimation(player, targetX, targetY) {
-
-    let query = `.${player}-gameboard .square[data-x="${targetX}"][data-y="${targetY}"] .mark`
+    let query = `.${player}-gameboard .square[data-x="${targetX}"][data-y="${targetY}"] .mark`;
     let hitMark = document.querySelector(query);
-    hitMark.classList.add('hit-wave');
+    hitMark.classList.add("hit-wave");
 
     // if ship is sunk add explosion animation
 
     let hitShip;
 
-    if (player === 'player1') {
+    if (player === "player1") {
       hitShip = this.game.player1.gameboard.board[targetY][targetX];
     } else {
       hitShip = this.game.player2.gameboard.board[targetY][targetX];
@@ -265,16 +280,15 @@ export class DomController {
         let shipX = startCoord[0];
         let shipY = startCoord[1];
 
-        if (hitShip.orientation === 'horizontal') {
+        if (hitShip.orientation === "horizontal") {
           shipX += i;
         } else {
           shipY += i;
         }
 
-        let query = `.${player}-gameboard .square[data-x="${shipX}"][data-y="${shipY}"] .explosion`
+        let query = `.${player}-gameboard .square[data-x="${shipX}"][data-y="${shipY}"] .explosion`;
         let explosionMark = document.querySelector(query);
-        explosionMark.classList.add('explode-wave');
-
+        explosionMark.classList.add("explode-wave");
       }
     }
   }
@@ -282,36 +296,38 @@ export class DomController {
   showGameOver() {
     // disable boards and remove turn styles
 
-    let gameboards = document.querySelectorAll('.gameboard');
+    let gameboards = document.querySelectorAll(".gameboard");
 
     gameboards.forEach((gameboard) => {
-      gameboard.classList.add('disabled');
-      gameboard.classList.remove('turn');
-      gameboard.classList.remove('not-turn');
-    })
+      gameboard.classList.add("disabled");
+      gameboard.classList.remove("turn");
+      gameboard.classList.remove("not-turn");
+    });
 
     // get game winner
-    let winner = this.player1.gameboard.areAllShipsSunk() ? 'player2' : 'player1';
+    let winner = this.player1.gameboard.areAllShipsSunk()
+      ? "player2"
+      : "player1";
 
     let winnerBoard;
     let winnerStats;
 
-    if (winner === 'player1') {
-      winnerBoard = document.querySelector('.player1-gameboard');
-      winnerStats = document.querySelector('.player1-stats');
-    } else if (winner === 'player2') {
-      winnerBoard = document.querySelector('.player2-gameboard');
-      winnerStats = document.querySelector('.player2-stats');
+    if (winner === "player1") {
+      winnerBoard = document.querySelector(".player1-gameboard");
+      winnerStats = document.querySelector(".player1-stats");
+    } else if (winner === "player2") {
+      winnerBoard = document.querySelector(".player2-gameboard");
+      winnerStats = document.querySelector(".player2-stats");
     }
 
     // apply winning styles
-    winnerBoard.classList.add('winner-board');
-    winnerStats.classList.add('winner-stats');
+    winnerBoard.classList.add("winner-board");
+    winnerStats.classList.add("winner-stats");
 
     // append winning crown
-    let winnerName = winnerStats.querySelector('.name');
-    let crown = document.createElement('div');
-    crown.classList.add('crown');
+    let winnerName = winnerStats.querySelector(".name");
+    let crown = document.createElement("div");
+    crown.classList.add("crown");
     crown.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path fill="none" stroke="#FFCC00" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 18h14M5 14h14l1-9l-4 3l-4-5l-4 5l-4-3z" />
@@ -321,64 +337,62 @@ export class DomController {
   }
 
   loadStartPage() {
-    let body = document.querySelector('body');
+    let body = document.querySelector("body");
     let startPage = renderStartPage(this.game);
 
     body.appendChild(startPage);
 
     // add event listeners
-    let boardContainer = startPage.querySelector('.board-container');
-    let ships = document.querySelectorAll('.ship-placement-box > *');
-    let randomizeButton = document.querySelector('.randomize-button');
-    let resetButton = document.querySelector('.reset-button');
-    let startButton = document.querySelector('.start-button');
-
+    let boardContainer = startPage.querySelector(".board-container");
+    let ships = document.querySelectorAll(".ship-placement-box > *");
+    let randomizeButton = document.querySelector(".randomize-button");
+    let resetButton = document.querySelector(".reset-button");
+    let startButton = document.querySelector(".start-button");
 
     // mouse down event
     for (let ship of ships) {
-      ship.addEventListener('mousedown', (e) => {
+      ship.addEventListener("mousedown", (e) => {
         this.isDragging = true;
         this.beingDragged = ship;
 
         this.startX = e.clientX;
         this.startY = e.clientY;
 
-        this.beingDragged.style.cursor = 'grabbing';
+        this.beingDragged.style.cursor = "grabbing";
 
-        document.addEventListener('mousemove', this.dragStart);
-        document.addEventListener('mouseup', this.dragEnd);
+        document.addEventListener("mousemove", this.dragStart);
+        document.addEventListener("mouseup", this.dragEnd);
       });
     }
 
     // mouse down event on gameboard
-    boardContainer.addEventListener('mousedown', (e) => {
-      if (e.target.classList.contains('ship')) {
+    boardContainer.addEventListener("mousedown", (e) => {
+      if (e.target.classList.contains("ship")) {
         this.isDragging = true;
         this.beingDragged = e.target;
 
         this.startX = e.clientX;
         this.startY = e.clientY;
 
-        this.beingDragged.style.cursor = 'grabbing';
+        this.beingDragged.style.cursor = "grabbing";
 
-        document.addEventListener('mousemove', this.dragStart);
-        document.addEventListener('mouseup', this.dragEnd);
+        document.addEventListener("mousemove", this.dragStart);
+        document.addEventListener("mouseup", this.dragEnd);
       }
     });
 
-    randomizeButton.addEventListener('click', this.randomize);
-    resetButton.addEventListener('click', this.reset);
-    startButton.addEventListener('click', this.start);
+    randomizeButton.addEventListener("click", this.randomize);
+    resetButton.addEventListener("click", this.reset);
+    startButton.addEventListener("click", this.start);
   }
 
   dragStart(e) {
     if (!this.isDragging) return;
 
     // for moving ship within gameboard
-    if (this.beingDragged.classList.contains('ship')) {
-
+    if (this.beingDragged.classList.contains("ship")) {
       // get ship type
-      let shipType = this.beingDragged.getAttribute('data-ship-type');
+      let shipType = this.beingDragged.getAttribute("data-ship-type");
       let query = `.ship[data-ship-type=${shipType}]`;
       let shipParts = document.querySelectorAll(query);
 
@@ -387,26 +401,23 @@ export class DomController {
 
       // move ship parts
       for (let ship of shipParts) {
-        ship.style.setProperty('--offsetY', this.newY + 'px');
-        ship.style.setProperty('--offsetX', this.newX + 'px');
+        ship.style.setProperty("--offsetY", this.newY + "px");
+        ship.style.setProperty("--offsetX", this.newX + "px");
       }
-
     } else {
       this.newX = e.clientX - this.startX;
       this.newY = e.clientY - this.startY;
 
-      this.beingDragged.style.top = this.newY + 'px';
-      this.beingDragged.style.left = this.newX + 'px';
+      this.beingDragged.style.top = this.newY + "px";
+      this.beingDragged.style.left = this.newX + "px";
     }
-
-    
   }
 
   dragEnd(e) {
     this.isDragging = false;
 
-    if (this.beingDragged.classList.contains('ship')) {
-      let shipType = this.beingDragged.getAttribute('data-ship-type');
+    if (this.beingDragged.classList.contains("ship")) {
+      let shipType = this.beingDragged.getAttribute("data-ship-type");
       let query = `.ship[data-ship-type=${shipType}]`;
       let shipParts = document.querySelectorAll(query);
 
@@ -414,13 +425,18 @@ export class DomController {
       let offsetY = shipParts[0].offsetHeight / 2;
       let offsetX = shipParts[0].offsetWidth / 2;
 
-      shipParts[0].style.visibility = 'hidden'; // get element being hovered at by setting style to hidden
-      let dropTarget = document.elementFromPoint(rect.left + offsetX, rect.top + offsetY); // using elementHeight / 2 to get the left center point of the element
-      shipParts[0].style.visibility = 'visible';
+      shipParts[0].style.visibility = "hidden"; // get element being hovered at by setting style to hidden
+      let dropTarget = document.elementFromPoint(
+        rect.left + offsetX,
+        rect.top + offsetY,
+      ); // using elementHeight / 2 to get the left center point of the element
+      shipParts[0].style.visibility = "visible";
 
-      if (dropTarget !== null && dropTarget.classList.contains('square')) {
+      if (dropTarget !== null && dropTarget.classList.contains("square")) {
         // todo
-        let shipObject = this.player1.gameboard.ships.find(ship => ship.type === shipType);
+        let shipObject = this.player1.gameboard.ships.find(
+          (ship) => ship.type === shipType,
+        );
         let shipStartCoord = shipObject.startCoord;
 
         // remove ship from ships
@@ -428,10 +444,10 @@ export class DomController {
 
         // place ship (if not valid, place ship again using original values)
         let isPlaced = this.placeShip(
-          dropTarget.getAttribute('data-x'),
-          dropTarget.getAttribute('data-y'),
+          dropTarget.getAttribute("data-x"),
+          dropTarget.getAttribute("data-y"),
           shipType,
-          this.beingDragged.getAttribute('data-orientation')
+          this.beingDragged.getAttribute("data-orientation"),
         );
 
         if (!isPlaced) {
@@ -439,7 +455,7 @@ export class DomController {
             shipStartCoord[0],
             shipStartCoord[1],
             shipType,
-            this.beingDragged.getAttribute('data-orientation')
+            this.beingDragged.getAttribute("data-orientation"),
           );
         }
 
@@ -450,52 +466,55 @@ export class DomController {
       } else {
         // return ships to position
         for (let ship of shipParts) {
-          ship.style.setProperty('--offsetY', 0 + 'px');
-          ship.style.setProperty('--offsetX', 0 + 'px');
+          ship.style.setProperty("--offsetY", 0 + "px");
+          ship.style.setProperty("--offsetX", 0 + "px");
         }
       }
     } else {
       let rect = this.beingDragged.getBoundingClientRect();
-      let offsetY = this.beingDragged.querySelector('.square').offsetHeight / 2;
-      let offsetX = this.beingDragged.querySelector('.square').offsetWidth / 2;
+      let offsetY = this.beingDragged.querySelector(".square").offsetHeight / 2;
+      let offsetX = this.beingDragged.querySelector(".square").offsetWidth / 2;
 
-      this.beingDragged.style.visibility = 'hidden'; // get element being hovered at by setting style to hidden
-      let dropTarget = document.elementFromPoint(rect.left + offsetX, rect.top + offsetY); // using elementHeight / 2 to get the left center point of the element
-      this.beingDragged.style.visibility = 'visible';
-      
-      if (dropTarget !== null && dropTarget.classList.contains('square')) {
+      this.beingDragged.style.visibility = "hidden"; // get element being hovered at by setting style to hidden
+      let dropTarget = document.elementFromPoint(
+        rect.left + offsetX,
+        rect.top + offsetY,
+      ); // using elementHeight / 2 to get the left center point of the element
+      this.beingDragged.style.visibility = "visible";
+
+      if (dropTarget !== null && dropTarget.classList.contains("square")) {
         // add ship to gameboard
         let isPlaced = this.placeShip(
-          dropTarget.getAttribute('data-x'),
-          dropTarget.getAttribute('data-y'),
-          this.beingDragged.getAttribute('data-ship-type'),
-          'horizontal'
-        ) 
+          dropTarget.getAttribute("data-x"),
+          dropTarget.getAttribute("data-y"),
+          this.beingDragged.getAttribute("data-ship-type"),
+          "horizontal",
+        );
 
         if (isPlaced) {
-          this.beingDragged.style.visibility = 'hidden';
-        } 
+          this.beingDragged.style.visibility = "hidden";
+        }
       } else {
-        this.beingDragged.style.visibility = 'visible';
+        this.beingDragged.style.visibility = "visible";
       }
 
       // return element to original place
       this.beingDragged.style.top = 0;
       this.beingDragged.style.left = 0;
 
-      this.beingDragged.style.cursor = 'grab';
+      this.beingDragged.style.cursor = "grab";
     }
 
-    document.removeEventListener('mousemove', this.dragStart);
-    document.removeEventListener('mouseup', this.dragEnd);
+    document.removeEventListener("mousemove", this.dragStart);
+    document.removeEventListener("mouseup", this.dragEnd);
   }
 
   rotateShip(e) {
-    if (e.target.classList.contains('ship')) {
+    if (e.target.classList.contains("ship")) {
       // get ship coordinates
       let shipElement = e.target;
-      let pivotX = Number(shipElement.getAttribute('data-x'));
-      let pivotY = Number(shipElement.getAttribute('data-y'));
+      let pivotX = Number(shipElement.getAttribute("data-x"));
+      let pivotY = Number(shipElement.getAttribute("data-y"));
 
       let shipObject = this.player1.gameboard.board[pivotY][pivotX];
       let shipStartCoord = shipObject.startCoord;
@@ -513,21 +532,22 @@ export class DomController {
       let newShipY = pivotY + newOffsetY;
 
       // if ship is vertical, shift the anchor point to the left, if horizontal shift to top
-      if (shipOrientation === 'vertical') {
+      if (shipOrientation === "vertical") {
         newShipX = newShipX - (shipObject.length - 1);
       }
 
-      let newOrientation = shipOrientation === 'horizontal' ? 'vertical' : 'horizontal';
+      let newOrientation =
+        shipOrientation === "horizontal" ? "vertical" : "horizontal";
 
       // remove ship from ships
       this.player1.gameboard.removeShip(shipObject.type);
 
-      // place ship 
+      // place ship
       let isPlaced = this.placeShip(
         newShipX,
         newShipY,
         shipObject.type,
-        newOrientation
+        newOrientation,
       );
 
       // if not valid, rotate ship again clockwise until valid or back to original position
@@ -548,7 +568,7 @@ export class DomController {
         newOrientation = temp;
 
         // if ship is vertical, shift the anchor point to the left, if horizontal shift to top
-        if (shipOrientation === 'vertical') {
+        if (shipOrientation === "vertical") {
           newShipX = newShipX - (shipObject.length - 1);
         }
 
@@ -556,20 +576,25 @@ export class DomController {
           newShipX,
           newShipY,
           shipObject.type,
-          newOrientation
+          newOrientation,
         );
       }
 
-      console.log({pivotX, pivotY});
+      console.log({ pivotX, pivotY });
     }
   }
 
   placeShip(x, y, shipType, orientation) {
-    let isPlaced = this.player1.gameboard.placeShip(shipType, Number(x), Number(y), orientation);
+    let isPlaced = this.player1.gameboard.placeShip(
+      shipType,
+      Number(x),
+      Number(y),
+      orientation,
+    );
 
     if (isPlaced) {
       // rerender gameboard
-      let gameboard = document.querySelector('.start-gameboard');
+      let gameboard = document.querySelector(".start-gameboard");
 
       gameboard.replaceWith(renderStartBoard(this.game));
       return true;
@@ -582,20 +607,20 @@ export class DomController {
     // clear board in case ships are placed
     this.player1.gameboard = new Gameboard();
 
-    // place ships randomly 
+    // place ships randomly
     this.player1.placeShipsRandomly();
 
     // return all placement ships in box and hide
-    let ships = document.querySelectorAll('.ship-placement-box > *');
+    let ships = document.querySelectorAll(".ship-placement-box > *");
 
     for (let ship of ships) {
-      ship.style.top = 0 + 'px';
-      ship.style.left = 0 + 'px';
-      ship.style.visibility = 'hidden';
+      ship.style.top = 0 + "px";
+      ship.style.left = 0 + "px";
+      ship.style.visibility = "hidden";
     }
 
     // rerender gameboard
-    let gameboard = document.querySelector('.start-gameboard');
+    let gameboard = document.querySelector(".start-gameboard");
     gameboard.replaceWith(renderStartBoard(this.game));
   }
 
@@ -604,16 +629,16 @@ export class DomController {
     this.player1.gameboard = new Gameboard();
 
     // return all placement ships in box
-    let ships = document.querySelectorAll('.ship-placement-box > *');
+    let ships = document.querySelectorAll(".ship-placement-box > *");
 
     for (let ship of ships) {
-      ship.style.top = 0 + 'px';
-      ship.style.left = 0 + 'px';
-      ship.style.visibility = 'visible';
+      ship.style.top = 0 + "px";
+      ship.style.left = 0 + "px";
+      ship.style.visibility = "visible";
     }
 
     // rerender gameboard
-    let gameboard = document.querySelector('.start-gameboard');
+    let gameboard = document.querySelector(".start-gameboard");
     gameboard.replaceWith(renderStartBoard(this.game));
   }
 
@@ -631,11 +656,11 @@ export class DomController {
       // switch to game page
       this.clearBody();
       this.loadGamePage();
-    } 
+    }
   }
 
   clearBody() {
-    let body = document.querySelector('body');
-    body.innerHTML = '';
+    let body = document.querySelector("body");
+    body.innerHTML = "";
   }
 }

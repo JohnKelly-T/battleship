@@ -7,14 +7,14 @@ export class Player {
 
   placeShipsRandomly() {
     let ships = [
-      'carrier', 
-      'battleship',
-      'destroyer',
-      'submarine', 
-      'patrolBoat'
-    ]
+      "carrier",
+      "battleship",
+      "destroyer",
+      "submarine",
+      "patrolBoat",
+    ];
 
-    let orientations = ['vertical', 'horizontal'];
+    let orientations = ["vertical", "horizontal"];
 
     for (let ship of ships) {
       let x = Math.floor(Math.random() * 10);

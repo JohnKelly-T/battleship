@@ -25,11 +25,13 @@ export class Game {
   }
 
   isOver() {
-    if (this.player1.gameboard.areAllShipsSunk() || this.player2.gameboard.areAllShipsSunk()) {
+    if (
+      this.player1.gameboard.areAllShipsSunk() ||
+      this.player2.gameboard.areAllShipsSunk()
+    ) {
       return true;
     }
 
     return false;
   }
-
 }

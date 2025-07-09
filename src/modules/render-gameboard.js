@@ -1,38 +1,37 @@
 import { Ship } from "./ship";
 
-export function renderPlayer1Board(game) { 
-
-  let playerBoard = document.createElement('div');
-  playerBoard.classList.add('player1-gameboard');
-  playerBoard.classList.add('gameboard');
+export function renderPlayer1Board(game) {
+  let playerBoard = document.createElement("div");
+  playerBoard.classList.add("player1-gameboard");
+  playerBoard.classList.add("gameboard");
 
   for (let i = 0; i < 10; i++) {
     for (let j = 0; j < 10; j++) {
-      let square = document.createElement('div');
-      square.classList.add('square');
-      square.setAttribute('data-y', i);
-      square.setAttribute('data-x', j);
+      let square = document.createElement("div");
+      square.classList.add("square");
+      square.setAttribute("data-y", i);
+      square.setAttribute("data-x", j);
 
       let squareItem = game.player1.gameboard.board[i][j];
 
       // add ship
       if (squareItem instanceof Ship) {
-        let ship = document.createElement('div');
-        ship.classList.add('ship');
+        let ship = document.createElement("div");
+        ship.classList.add("ship");
 
         square.appendChild(ship);
       }
 
       // add marks
       let mark = game.player1.gameboard.receivedAttacks[i][j];
-      let markElement = document.createElement('div');
-      markElement.classList.add('mark');
+      let markElement = document.createElement("div");
+      markElement.classList.add("mark");
 
-      if (mark === 'miss') {
-        markElement.classList.add('miss');
-      } else if (mark === 'empty') {
-        markElement.classList.add('empty');
-      } else if (mark === 'hit') {
+      if (mark === "miss") {
+        markElement.classList.add("miss");
+      } else if (mark === "empty") {
+        markElement.classList.add("empty");
+      } else if (mark === "hit") {
         // if ship is sunk, show explosion mark
         if (squareItem.isSunk()) {
           markElement.innerHTML = `
@@ -41,9 +40,9 @@ export function renderPlayer1Board(game) {
             </svg>
           `;
 
-          markElement.classList.add('explosion');
+          markElement.classList.add("explosion");
         } else {
-          markElement.classList.add('hit');
+          markElement.classList.add("hit");
         }
       }
 
@@ -52,46 +51,45 @@ export function renderPlayer1Board(game) {
       }
 
       playerBoard.appendChild(square);
-    } 
+    }
   }
 
   return playerBoard;
 }
 
-export function renderPlayer2Board(game) { 
-
-  let playerBoard = document.createElement('div');
-  playerBoard.classList.add('player2-gameboard');
-  playerBoard.classList.add('gameboard');
-  playerBoard.classList.add('turn');
+export function renderPlayer2Board(game) {
+  let playerBoard = document.createElement("div");
+  playerBoard.classList.add("player2-gameboard");
+  playerBoard.classList.add("gameboard");
+  playerBoard.classList.add("turn");
 
   for (let i = 0; i < 10; i++) {
     for (let j = 0; j < 10; j++) {
-      let square = document.createElement('div');
-      square.classList.add('square');
-      square.setAttribute('data-y', i);
-      square.setAttribute('data-x', j);
+      let square = document.createElement("div");
+      square.classList.add("square");
+      square.setAttribute("data-y", i);
+      square.setAttribute("data-x", j);
 
       let squareItem = game.player2.gameboard.board[i][j];
 
       // add ship
       if (squareItem instanceof Ship && squareItem.isSunk()) {
-        let ship = document.createElement('div');
-        ship.classList.add('ship');
+        let ship = document.createElement("div");
+        ship.classList.add("ship");
 
         square.appendChild(ship);
       }
 
       // add marks
       let mark = game.player2.gameboard.receivedAttacks[i][j];
-      let markElement = document.createElement('div');
-      markElement.classList.add('mark');
+      let markElement = document.createElement("div");
+      markElement.classList.add("mark");
 
-      if (mark === 'miss') {
-        markElement.classList.add('miss');
-      } else if (mark === 'empty') {
-        markElement.classList.add('empty');
-      } else if (mark === 'hit') {
+      if (mark === "miss") {
+        markElement.classList.add("miss");
+      } else if (mark === "empty") {
+        markElement.classList.add("empty");
+      } else if (mark === "hit") {
         // if ship is sunk, show explosion mark
         if (squareItem.isSunk()) {
           markElement.innerHTML = `
@@ -100,9 +98,9 @@ export function renderPlayer2Board(game) {
             </svg>
           `;
 
-          markElement.classList.add('explosion');
+          markElement.classList.add("explosion");
         } else {
-          markElement.classList.add('hit');
+          markElement.classList.add("hit");
         }
       }
 
@@ -111,41 +109,40 @@ export function renderPlayer2Board(game) {
       }
 
       playerBoard.appendChild(square);
-    } 
+    }
   }
 
   return playerBoard;
 }
 
 export function renderStartBoard(game) {
-
-  let playerBoard = document.createElement('div');
-  playerBoard.classList.add('start-gameboard');
-  playerBoard.classList.add('gameboard');
+  let playerBoard = document.createElement("div");
+  playerBoard.classList.add("start-gameboard");
+  playerBoard.classList.add("gameboard");
 
   for (let i = 0; i < 10; i++) {
     for (let j = 0; j < 10; j++) {
-      let square = document.createElement('div');
-      square.classList.add('square');
-      square.setAttribute('data-y', i);
-      square.setAttribute('data-x', j);
+      let square = document.createElement("div");
+      square.classList.add("square");
+      square.setAttribute("data-y", i);
+      square.setAttribute("data-x", j);
 
       let squareItem = game.player1.gameboard.board[i][j];
 
       // add ship
       if (squareItem instanceof Ship) {
-        let ship = document.createElement('div');
-        ship.classList.add('ship');
-        ship.setAttribute('data-ship-type', squareItem.type);
-        ship.setAttribute('data-y', i);
-        ship.setAttribute('data-x', j);
-        ship.setAttribute('data-orientation', squareItem.orientation);
+        let ship = document.createElement("div");
+        ship.classList.add("ship");
+        ship.setAttribute("data-ship-type", squareItem.type);
+        ship.setAttribute("data-y", i);
+        ship.setAttribute("data-x", j);
+        ship.setAttribute("data-orientation", squareItem.orientation);
 
         square.appendChild(ship);
       }
 
       playerBoard.appendChild(square);
-    } 
+    }
   }
 
   return playerBoard;
