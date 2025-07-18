@@ -23,6 +23,9 @@ export class DomController {
     this.newY;
     this.beingDragged;
 
+    // for ai move
+    this.AiTimeout = null;
+
     // bind methods
     this.dragStart = this.dragStart.bind(this);
     this.dragEnd = this.dragEnd.bind(this);
@@ -153,7 +156,7 @@ export class DomController {
           player1Gameboard.classList.add("turn");
           player1Gameboard.classList.remove("not-turn");
 
-          setTimeout(() => {
+          this.AiTimeout = setTimeout(() => {
             // make AI player move
             let [moveX, moveY] = this.player2.getNextMove(
               this.game.turnEnemy.gameboard,
@@ -218,6 +221,9 @@ export class DomController {
       this.ambientSound.pause();
       this.ambientSound.currentTime = 0;
 
+      // clear any timeouts
+      clearTimeout(this.AiTimeout);
+      
       this.loadStartPage();
     });
 
