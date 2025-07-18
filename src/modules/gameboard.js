@@ -5,9 +5,7 @@ export class Gameboard {
     this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
     this.ships = [];
     this.remainingShips = 5;
-    this.receivedAttacks = Array.from({ length: 10 }, () => {
-      Array(10).fill(null);
-    });
+    this.receivedAttacks = Array.from({ length: 10 }, () => Array(10).fill(null));
   }
 
   placeShip(shipType, startX, startY, orientation) {
